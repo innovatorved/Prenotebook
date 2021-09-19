@@ -12,6 +12,12 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
+// Available Routes
+app.use("/api/auth" , require("./routes/auth"));  // Route auth.js
+app.use("/api/notes" , require("./routes/notes"));  // Route notes.js
+
+
+// Listen app to port
 app.listen(port, () => {
   console.log(`Example app listening at https://${port}-kumquat-wolf-t4uqc0ae.ws-us15.gitpod.io/`);
 });

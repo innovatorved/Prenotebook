@@ -23,3 +23,7 @@ z-comp/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+# note
+note.txt

@@ -2,7 +2,7 @@
 tasks:
   - name : bash1
     init :  bash install.sh
-    command : nodemon index.js
+    command : cd backend && nodemon index.js
   - name : bash2
     init : cd prenotebook
     command : npm install

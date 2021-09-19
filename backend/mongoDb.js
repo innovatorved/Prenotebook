@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 
 // connection string 
-const mongoURI = "mongodb+srv://nodeAppBackend:1ahzt1VhHHJMSNsu@prebackend-node.wykxx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const mongoURI = "mongodb+srv://nodeAppBackend:1ahzt1VhHHJMSNsu@prebackend-node.wykxx.mongodb.net/preNotebookUser?retryWrites=true&w=majority";
 
 const connectToMongo = () => {
     mongoose.connect(mongoURI , ()=>{

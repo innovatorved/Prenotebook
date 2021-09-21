@@ -1,5 +1,5 @@
 
-https://3002-green-tuna-wml98bwd.ws-us15.gitpod.io/api/auth/createuser/
+https://3002-copper-weasel-d2fln7y9.ws-us15.gitpod.io/api/auth/createuser/
 
 {
     "name" : "Ved Gupta",

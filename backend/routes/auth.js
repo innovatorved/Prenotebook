@@ -56,6 +56,7 @@ router.post("/createuser" ,[
   }catch(err){
     // Run if any error occurs in last
     res.json({error : "Some issue try after some time"});
+    console.error(err.message);
   }
 });
 

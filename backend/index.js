@@ -23,5 +23,5 @@ app.use("/api/notes" , require("./routes/notes"));  // Route notes.js
 
 // Listen app to port
 app.listen(port, () => {
-  console.log(`Example app listening at https://${port}-kumquat-wolf-t4uqc0ae.ws-us15.gitpod.io/`);
+  console.log(`Example app listening at https://${port}-copper-weasel-d2fln7y9.ws-us15.gitpod.io`);
 });

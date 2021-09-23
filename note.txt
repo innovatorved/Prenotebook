@@ -7,3 +7,5 @@ https://3002-copper-weasel-d2fln7y9.ws-us15.gitpod.io/api/auth/createuser/
     "email" : "vedgupta@protonmail.com",
     "password" : "!@#741520gg"
 }
+
+/workspace/PreNotebook/thunderclient

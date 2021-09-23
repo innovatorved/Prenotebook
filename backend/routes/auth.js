@@ -13,11 +13,14 @@ const bcrypt = require('bcryptjs');
 // Use JWT - Json Web Token to Authenticate the User
 const jwt = require('jsonwebtoken');
 // -- we send 2 parts key and data 
-const JWT_key = "!@#POIGFT8752qweVEDDEV7U";
+const JWT_key = process.env.JWT_TOKEN; // Store in the form og gitpod variable
+// JWT_TOKEN
 
+// Import middleware of getuser that extract info from JWT
+const fetchUser = require("../middleware/fetchUserDetails");
 
 // Recieve app.use route request
-// user post metheod /api/auth/createuser
+// Route 1 : user post metheod /api/auth/createuser
 router.post("/createuser", [
   // Verify the validation
   body('name', "Enter minimum 3 character in Name").isLength({ min: 3 }),
@@ -84,7 +87,7 @@ router.post("/createuser", [
   }
 });
 
-// Authenticate a User : Login
+// Route 2 : Authenticate a User : Login
 router.post("/login" , [
   body('email', "Wrong Email Pattern , Enter a valid Email Address").isEmail(),
   ]
@@ -130,6 +133,20 @@ router.post("/login" , [
      res.status(500).send("Internal Server try after some time");
      console.error(err.message);
   }
+})
+
+// Route 3 : Post metheod /getUser : Get user details
+router.post("/getuser" , fetchUser , async (req , res) => {
+  // console.log(req.user.id); // Id of User
+  try {
+    const userID = req.user.id;
+    const userDetails = await User.findById(userID).select("-password");
+    res.send(userDetails);
+  } catch (err) {
+    // Run if any error occurs in last
+    res.status(500).send("Internal Server try after some time2");
+    console.error(err.message);
+}
 })
 
 module.exports = router;

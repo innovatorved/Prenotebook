@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // Import Schema
-const User = require("../models/User.js");
+const User = require("../models/User");
 
 // // Express Validation
 const { body, validationResult } = require('express-validator');
@@ -28,7 +28,7 @@ router.post("/createuser", [
   body('email', "Wrong Email Pattern , Enter a valid Email Address").isEmail(),
   body('password', "Minimum password length is 6").isLength({ min: 6 }),
 ], async (req, res) => {
-
+  console.log("try to create the user");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     // check error after validation

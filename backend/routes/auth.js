@@ -4,7 +4,7 @@ const router = express.Router();
 // Import Schema
 const User = require("../models/User");
 
-// // Express Validation
+// Express Validation
 const { body, validationResult } = require('express-validator');
 
 // import bcrypt for  Encyption in passwords 

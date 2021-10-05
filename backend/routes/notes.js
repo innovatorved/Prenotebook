@@ -56,5 +56,36 @@ router.post("/createnotes" , fetchUserDetails ,[
     }
 });
 
+// Update Notes endpoint : /updatenote
+
+router.put("/updatenote/:id" , fetchUserDetails , async(req , res) => {
+    try {
+        
+        const RecNoteId = req.params.id;    // Parameter is note id sent by client
+        let note = await Notes.findById(RecNoteId); // Check the note in database by id
+
+        const NoteUser = note.user.toString(); // change user object to string
+        const ReqFromUser = req.user.id;
+
+        if(!note){return res.status(404).send("Note not Found")};   // Check note existence
+        if (NoteUser !== ReqFromUser){return res.status(401).send("UnAuthorished Access")};// Check the owner of note is real
+
+        const { title , description , tag } = req.body;
+        const updateDetails = {};
+
+        if(title){updateDetails.title = title};
+        if(description){updateDetails.description = description};
+        if(tag){updateDetails.tag = tag};
+        // console.log(updateDetails);
+        // Update the note using Notes Schema
+        UpdateNote1 = await Notes.findByIdAndUpdate(RecNoteId , {$set : updateDetails} , {new:true});
+        res.json({UpdateNote1});
+
+    } catch (error) {
+        // Run if any error occurs in last
+        res.status(500).send("Internal Server try after some time2");
+        console.error(error.message);
+    }
+})
 
 module.exports = router;

@@ -1,0 +1,22 @@
+{
+  "name": "prenotebook",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "both": "concurrently \"nodemon backend/index.js\" \" cd prenotebook && npm run start \" "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/innovatorved/PreNotebook.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/innovatorved/PreNotebook/issues"
+  },
+  "homepage": "https://github.com/innovatorved/PreNotebook#readme",
+  "dependencies": {
+    "concurrently": "^6.3.0"
+  }
+}

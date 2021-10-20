@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+require('dotenv').config()
 
 // Import Schema
 const User = require("../models/User");

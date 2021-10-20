@@ -2,6 +2,7 @@
 const mongoose = require("mongoose");
 
 // connection string 
+require('dotenv').config()
 const mongoURI = process.env.MONGO_API;
 
 const connectToMongo =() => {

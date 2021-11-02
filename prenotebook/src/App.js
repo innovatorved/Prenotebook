@@ -1,22 +1,35 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
 
+import Navbar from './Component/Navbar';
+import Home from './Component/Home';
+import About from './Component/About';
 
-import Navbar from './Component/Navbar'
-import './App.css'
-import Login from "./Component/Login";
+import NoteState from './Context/notes/NoteState';
 
 function App() {
   return (
-    <div className="App font-link">
-      <Navbar/>
-    <Router>
-      <Route exact path="/login">
-        <Login/>
-      </Route>
-    </Router>
-    </div>
+    <>
+    <NoteState>
+        <Router>
+          <Navbar/>
+
+          <Switch>
+            <Route exact path="/">
+              <Home/>
+            </Route>
+            <Route exact path="/about">
+              <About/>
+            </Route>
+          </Switch>
+
+        </Router>
+      </NoteState>
+    </>
   );
 }
 

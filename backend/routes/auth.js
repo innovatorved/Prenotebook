@@ -80,7 +80,7 @@ router.post("/createuser", [
     let authtoken = jwt.sign(data , JWT_key);
     res.json({jwtToken : authtoken});
 
-    console.log(req.body);
+    // console.log(req.body);
   } catch (err) {
     // Run if any error occurs in last
     res.status(500).send("Internal Server try after some time");
@@ -138,7 +138,7 @@ router.post("/login" , [
 
 // Route 3 : Post metheod /getUser : Get user details
 router.post("/getuser" , fetchUser , async (req , res) => {
-  // console.log(req.user.id); // Id of User
+  console.log(req.user.id); // Id of User
   try {
     const userID = req.user.id;
     const userDetails = await User.findById(userID).select("-password");

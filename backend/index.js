@@ -24,5 +24,5 @@ app.use("/api/notes" , require("./routes/notes"));  // Route notes.js
 
 // Listen app to port
 app.listen(port, () => {
-  console.log(`Example app listening at https://localhost:${port}/`);
+  console.log(`PreNotebook app listening at https://localhost:${port}/`);
 });

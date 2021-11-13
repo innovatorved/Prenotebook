@@ -19,7 +19,7 @@ router.get('/fetchallnotes' , fetchUserDetails , async(req,res)=>{
         const notes = await Notes.find({user : userID});+
 
         // Send all notes to server
-        res.send({notes});
+        res.send(notes);
 
     } catch (error) {
         // Run if any error occurs in last
@@ -47,7 +47,7 @@ router.post("/createnotes" , fetchUserDetails ,[
         const {title , description , tag} = req.body;
         let notes = new Notes({title , description , tag , user : userID});
         let saveNote = await notes.save();
-        res.json({saveNote});
+        res.json(saveNote);
         
     } catch (error) {
         // Run if any error occurs in last

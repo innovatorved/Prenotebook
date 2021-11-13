@@ -29,7 +29,7 @@ router.post("/createuser", [
   body('email', "Wrong Email Pattern , Enter a valid Email Address").isEmail(),
   body('password', "Minimum password length is 6").isLength({ min: 6 }),
 ], async (req, res) => {
-  console.log("try to create the user");
+  // console.log("try to create the user");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     // check error after validation

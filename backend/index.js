@@ -1,5 +1,6 @@
 const connectToMongo = require("./mongoDb"); // Import mongoDb.js filee
 const express = require('express'); // Import Express Module
+var cors = require('cors') // ALllow CORS
 require('dotenv').config()
 
 // Lets Connect to MongoDb cluster
@@ -9,6 +10,8 @@ connectToMongo();
 const app = express();
 const port = 3002;
 
+// allow CORS using middleware
+app.use(cors())
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

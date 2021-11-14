@@ -1,0 +1,17 @@
+tasks:
+  - name: prenotebook
+    init: cd prenotebook && npm install && clear
+    command: cd /workspace/PreNotebook/prenotebook && npm start
+
+  - name: Backend
+    init: cd backend && npm install && clear
+    command: cd /workspace/PreNotebook/backend && npm install -g -D nodemon && clear && npm start
+
+  - name: Terminal 3
+    init: npm install
+    command: exit
+
+# Ports to expose on workspace startup
+ports:
+  - port: 3000
+  - port: 3002

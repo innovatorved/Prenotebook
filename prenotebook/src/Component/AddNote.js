@@ -26,6 +26,10 @@ export default function AddNote() {
                     <label htmlFor="description">Description</label>
                     <textarea type="text" className="form-control" id="description"  name="description" placeholder="Description" onChange={ChangesInNote}></textarea>
                 </div>
+                <div className="form-group">
+                    <label htmlFor="tag">Tag</label>
+                    <input type="text" className="form-control" id="etag"  name="tag" placeholder="Description" onChange={ChangesInNote}/>
+                </div>
                 <div className="form-group form-check">
                     <input type="checkbox" className="form-check-input" id="exampleCheck1" />
                     <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>

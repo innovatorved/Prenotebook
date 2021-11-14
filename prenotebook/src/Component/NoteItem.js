@@ -3,10 +3,14 @@ import {NoteContext} from '../Context/notes/NoteState';
 
 export default function NoteItem(props) {
     const {DeleteNote} = useContext(NoteContext);
-    const {note} = props;
+    const {note , UpdateNote} = props;
 
     const delNote=()=>{
         DeleteNote(note._id);
+    };
+
+    const TriggerUpdateNote=()=>{
+        UpdateNote(note);
     };
 
     return (
@@ -16,7 +20,7 @@ export default function NoteItem(props) {
                     <div className="d-flex align-items-center">
                         <h5 className="card-title">{note.title}</h5>
                         <i className="fas fa-trash-alt mx-2" onClick={delNote}></i>
-                        <i className="fas fa-pen mx-2"></i>
+                        <i className="fas fa-pen mx-2" onClick={TriggerUpdateNote}></i>
                     </div>
                     <p className="card-text">{note.description}</p>
                 </div>

@@ -102,7 +102,7 @@ router.delete("/deletenote/:id" , fetchUserDetails , async(req , res) => {
         // res.send("Details verified");
 
         delNote = await Notes.findByIdAndDelete(RecNoteId);
-        res.json({"Delete" : "Note HAs Been Deleted" , "note" : delNote});
+        res.json({"Delete" : "Note HAs Been Deleted"});
 
     } catch (error) {
         // Run if any error occurs in last

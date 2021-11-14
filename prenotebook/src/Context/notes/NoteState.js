@@ -19,7 +19,7 @@ let initialValues = [
       },
       {
         "_id": "3",
-        "title": "h",
+        "title": "",
         "description": "",
         "__v": 0
       }

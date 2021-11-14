@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import { NoteContext } from '../Context/notes/NoteState';
 
-export default function EditNote() {
+export default function EditNote(props) {
+    const {UpdateNote} = useContext(NoteContext);
+    const {note , setnote} = props;
 
-    const [note, setnote] = useState({
-        "title" : "",
-        "description" : "",
-        "tag" : ""
-    })
+    const NoteEditing =(e)=>{
+        setnote({...note,[e.target.name]: e.target.value});
+    }
 
     return (
         <div>
@@ -22,16 +23,16 @@ export default function EditNote() {
                         <div className="modal-body">
                             <form className="my-3">
                                 <div className="form-group">
-                                    <label htmlFor="etitle">Title</label>
-                                    <input type="text" className="form-control" id="etitle" name="etitle" placeholder="Title"  />
+                                    <label htmlFor="title">Title</label>
+                                    <input type="text" value={note.title} className="form-control" id="title" name="title" placeholder="Title" onChange={NoteEditing} />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="edescription">Description</label>
-                                    <textarea type="text" className="form-control" id="edescription" name="edescription" placeholder="Description" ></textarea>
+                                    <label htmlFor="description">Description</label>
+                                    <textarea type="text" value={note.description} className="form-control" id="description" name="description" placeholder="Description" onChange={NoteEditing}></textarea>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="etag">Tag</label>
-                                    <input type="text" className="form-control" id="etag" name="etag" placeholder="Description"  />
+                                    <input type="text" value={note.tag} className="form-control" id="etag" name="etag" placeholder="Description" onChange={NoteEditing} />
                                 </div>
                                 <div className="form-group form-check">
                                     <input type="checkbox" className="form-check-input" id="exampleCheck1" />
@@ -41,7 +42,7 @@ export default function EditNote() {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Save changes</button>
+                            <button type="button" className="btn btn-primary" onClick={(()=>{return UpdateNote(note._id , note)})}>Save changes</button>
                         </div>
                     </div>
                 </div>

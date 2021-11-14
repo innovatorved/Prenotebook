@@ -91,18 +91,11 @@ const NoteState = (props) => {
 
 
 
-  const UpdateNote=(id , title , description , tag)=>{
+  const UpdateNote=async(id , note)=>{
    
     // Call fetch api and update
     const url = `${host}/api/notes/updatenote/${id}`;
-    const note = {
-      "title" : title,
-      "description" : description,
-      "tag" : tag
-    }
-
-    const response = fetch(
-      url,{
+    const response = await fetch(url,{
         method : 'PUT',
         headers : {
           "Content-Type" : "application/json",
@@ -111,17 +104,25 @@ const NoteState = (props) => {
         body : JSON.stringify(note)
       }
     );
-    response.json();
+    // eslint-disable-next-line
+    const jsonRes = await response.json();
 
     // search for note with id and Update
     for (let index = 0; index < notes.length; index++) {
       const element = notes[index];
       if (element._id === id){
-        element.title = title;
-        element.description = description;
-        element.tag = tag;
+        element.title = note.title;
+        element.description = note.description;
+        element.tag = note.tag;
+        const n = notes.filter((singleNote)=>{
+          if (singleNote._id !== element.id){
+            return singleNote;
+          }else{
+            return element;
+          }
+        });
+        setnotes(n);
       }
-      
     }
   }
     return (

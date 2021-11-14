@@ -108,20 +108,14 @@ const NoteState = (props) => {
     const jsonRes = await response.json();
 
     // search for note with id and Update
+    let newNotes = JSON.parse(JSON.stringify(notes));
     for (let index = 0; index < notes.length; index++) {
-      const element = notes[index];
-      if (element._id === id){
-        element.title = note.title;
-        element.description = note.description;
-        element.tag = note.tag;
-        const n = notes.filter((singleNote)=>{
-          if (singleNote._id !== element.id){
-            return singleNote;
-          }else{
-            return element;
-          }
-        });
-        setnotes(n);
+      if (newNotes[index]._id === id){
+        newNotes[index].title = note.title;
+        newNotes[index].description = note.description;
+        newNotes[index].tag = note.tag;
+        setnotes(newNotes);
+        break;
       }
     }
   }

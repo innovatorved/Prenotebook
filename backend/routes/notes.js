@@ -32,7 +32,7 @@ router.get('/fetchallnotes' , fetchUserDetails , async(req,res)=>{
 router.post("/createnotes" , fetchUserDetails ,[
     // Verify the validation
     body('title', "Enter minimum 3 character in Title").isLength({ min: 3 }),
-    body('description', "Minimum 25 characters neccessary in Description").isLength({ min: 25 }),
+    body('description', "Minimum 10 characters neccessary in Description").isLength({ min: 10 }),
 ], async(req , res)=>{
 
     

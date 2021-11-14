@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext , useRef} from 'react';
 import { NoteContext } from '../Context/notes/NoteState';
 
 export default function EditNote(props) {
     const {UpdateNote} = useContext(NoteContext);
     const {note , setnote} = props;
 
+    const refClose = useRef(null);
     const NoteEditing =(e)=>{
         setnote({...note,[e.target.name]: e.target.value});
     }
@@ -41,8 +42,11 @@ export default function EditNote(props) {
                             </form>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary" onClick={(()=>{return UpdateNote(note._id , note)})}>Save changes</button>
+                            <button type="button" ref={refClose} className="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" disabled={note.title.length<3 || note.description.length<10} className="btn btn-primary" onClick={(()=>{
+                                    UpdateNote(note._id , note);
+                                    refClose.current.click();
+                                })}>Save changes</button>
                         </div>
                     </div>
                 </div>

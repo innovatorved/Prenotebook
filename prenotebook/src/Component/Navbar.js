@@ -7,7 +7,7 @@ export default function Navbar() {
 
     return (
         <div>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+            <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
                 <div className="container-fluid">
                     <Link className="navbar-brand" to="/">Prenotebook</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,6 +23,9 @@ export default function Navbar() {
                         </li>
                     </ul>
                     <form className="d-flex">
+                        <Link to="/login" className="btn btn-outline-info me-2" role="button" aria-disabled="true">Login</Link>
+                        <Link to="/signup" className="btn btn-outline-info me-2" role="button" aria-disabled="true">SignUp</Link>
+
                         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
                         <button className="btn btn-outline-success" type="submit">Search</button>
                     </form>

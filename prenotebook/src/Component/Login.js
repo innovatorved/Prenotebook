@@ -1,14 +1,40 @@
-import React , {useState} from 'react'
+import React , {useState} from 'react';
+import {useHistory} from 'react-router-dom';
+
+const host = "http://localhost:3002";
 
 export default function Login() {
+    const history = useHistory();
+
     const [credentials, setcredentials] = useState({
         "email" : "",
         "password" : ""
     });
 
-    const handleSubmit=(e)=>{
-        e.preventDefault();
+    const LoginFunc = async()=>{
+        const url = `${host}/api/auth/login`;
+        const response = await fetch(
+          url,{
+            method : 'POST',
+            headers : {
+              "Content-Type" : "application/json"
+            },
+            body : JSON.stringify(credentials)
+          }
+        );
+        const returnVal = await response.json();
+        return returnVal;
     }
+
+    const handleSubmit=async(e)=>{
+        e.preventDefault();
+        const json = await LoginFunc();
+        // console.log(json);
+        if (json.success){
+            localStorage.setItem("token" , json.authtoken);
+            history.push("/");
+        }
+    };
 
     const valueChanged=(e)=>{
         setcredentials({...credentials , [e.target.name]:e.target.value});
@@ -24,10 +50,6 @@ export default function Login() {
                 <div className="form-group">
                     <label htmlFor="exampleInputPassword1">Password</label>
                     <input type="password" name="password" value={credentials.password} onChange={valueChanged} className="form-control" id="exampleInputPassword1" placeholder="Password"/>
-                </div>
-                <div className="form-group form-check">
-                    <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
-                    <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
                 </div>
                 <button type="submit" className="btn btn-primary">Submit</button>
             </form>

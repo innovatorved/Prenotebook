@@ -31,9 +31,11 @@ router.post("/createuser", [
 ], async (req, res) => {
   // console.log("try to create the user");
   const errors = validationResult(req);
+  let success = false;
   if (!errors.isEmpty()) {
     // check error after validation
-    return res.status(400).json({ errors: errors.array() });
+    success = false;
+    return res.status(400).json({ success , errors: errors.array() });
   }
 
   try {
@@ -42,10 +44,12 @@ router.post("/createuser", [
     let userE = await User.findOne({ email: req.body.email});
     let userU = await User.findOne({ username: req.body.username });
     if (userE) {
-      return res.status(400).json({ error: "User with samee email id already Registered" });
+      success = false;
+      return res.status(400).json({ success , error: "User with samee email id already Registered" });
     }
     if (userU) {
-      return res.status(400).json({ error: "User with samee username already Registered" });
+      success = false;
+      return res.status(400).json({ success, error: "User with samee username already Registered" });
     }
 
     // Create secure hhassed password from password
@@ -78,12 +82,14 @@ router.post("/createuser", [
       }
     };
     let authtoken = jwt.sign(data , JWT_key);
-    res.json({jwtToken : authtoken});
+    success = true;
+    res.json({success , authtoken});
 
     // console.log(req.body);
   } catch (err) {
     // Run if any error occurs in last
-    res.status(500).send("Internal Server try after some time");
+    success = false;
+    res.status(500).json({success , error :"Internal Server try after some time"});
     console.error(err.message);
   }
 });
@@ -94,16 +100,20 @@ router.post("/login" , [
   ]
 , async(req , res)=>{
   // if Email is Wrong then make the error request
+  let success = false;
+
   const errors = validationResult(req);
   if(!errors.isEmpty()){
-    return res.status(400).json({errors : errors.array()});
+    success = false;
+    return res.status(400).json({success , errors : errors.array()});
   }
   const {email , password} = req.body;
   try {
     let user = await User.findOne({email});
     if (!user){
       // If user not exists it send Bad request 400
-      return res.status(400).json({error : "Please try to login with Correct Credentials"});
+      success = false;
+      return res.status(400).json({success , error : "Please try to login with Correct Credentials"});
     }
     // Check the password
     const passwordCompare = await bcrypt.compare(password , user.password);
@@ -116,7 +126,8 @@ router.post("/login" , [
 
     if(!passwordCompare){
       // If password wrong send Bad request 400
-      return res.status(400).json({error : "Please try to login with Correct Credentials"});
+      success = false;
+      return res.status(400).json({success , error : "Please try to login with Correct Credentials"});
     }
 
     /* Sending jwt token */
@@ -127,11 +138,13 @@ router.post("/login" , [
       }
     };
     let authtoken = jwt.sign(data , JWT_key);
-    res.json({jwtToken : authtoken});
+    success = true;
+    res.json({success , authtoken});
   }
   catch(err){
      // Run if any error occurs in last
-     res.status(500).send("Internal Server try after some time");
+     success = false;
+     res.status(500).send({success , "error" : "Internal Server Error"});
      console.error(err.message);
   }
 })
@@ -149,5 +162,18 @@ router.post("/getuser" , fetchUser , async (req , res) => {
     console.error(err.message);
 }
 })
+
+router.put("/checkusername/:username" , async(req , res)=>{
+  try{
+    let user = await User.findOne({ username: req.params.username });
+    if (user) {
+      return res.json({ "res" : true });
+    }else{
+      return res.json({ "res" : false });
+    }
+  }catch(e){
+    res.status(500).send("Problem to checking in username");
+  }
+});
 
 module.exports = router;

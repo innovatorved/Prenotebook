@@ -34,12 +34,13 @@ router.post("/createnotes" , fetchUserDetails ,[
     body('title', "Enter minimum 3 character in Title").isLength({ min: 3 }),
     body('description', "Minimum 10 characters neccessary in Description").isLength({ min: 10 }),
 ], async(req , res)=>{
-
-    
+    // console.log(req.body);
+    let success = false;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       // check error after validation
-      return res.status(400).json({ errors: errors.array() });
+      success = false;
+      return res.status(400).json({ success, errors: errors.array() });
     }
 
     try {
@@ -47,12 +48,14 @@ router.post("/createnotes" , fetchUserDetails ,[
         const {title , description , tag} = req.body;
         let notes = new Notes({title , description , tag , user : userID});
         let saveNote = await notes.save();
-        res.json(saveNote);
+        success = true;
+        return res.json({success , saveNote});
         
     } catch (error) {
         // Run if any error occurs in last
-        res.status(500).send("Internal Server try after some time2");
-        console.error(error.message);
+        success = false;
+        return res.status(500).json({success,"error":"Internal Server try after some time2"});
+        // console.error(error.message);
     }
 });
 
@@ -79,11 +82,11 @@ router.put("/updatenote/:id" , fetchUserDetails , async(req , res) => {
         // console.log(updateDetails);
         // Update the note using Notes Schema
         UpdateNote1 = await Notes.findByIdAndUpdate(RecNoteId , {$set : updateDetails} , {new:true});
-        res.json({UpdateNote1});
+        return res.json({UpdateNote1});
 
     } catch (error) {
         // Run if any error occurs in last
-        res.status(500).send("Internal Server try after some time2");
+        return res.status(500).send("Internal Server try after some time2");
         console.error(error.message);
     }
 })
@@ -102,11 +105,11 @@ router.delete("/deletenote/:id" , fetchUserDetails , async(req , res) => {
         // res.send("Details verified");
 
         delNote = await Notes.findByIdAndDelete(RecNoteId);
-        res.json({"Delete" : "Note HAs Been Deleted"});
+        return res.json({"Delete" : "Note HAs Been Deleted"});
 
     } catch (error) {
         // Run if any error occurs in last
-        res.status(500).send("Internal Server try after some time2");
+        return res.status(500).send("Internal Server try after some time2");
         console.error(error.message);
     }
 })

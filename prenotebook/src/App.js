@@ -6,22 +6,33 @@ import {
   Route,
 } from "react-router-dom";
 
+
 import Navbar from './Component/Navbar';
 import Home from './Component/Home';
 import About from './Component/About';
 import Login from './Component/Login';
 import SignUp from './Component/SignUp';
+import Alert from './Component/Alert';
 
 import NoteState from './Context/notes/NoteState';
+import AlertState from './Context/notes/AlertState';
+
+
 
 function App() {
+
   return (
     <>
       <NoteState>
+      <AlertState>
         <Router>
           <Navbar />
-          <div className="container" style={{"marginTop":"60px"}}>
-            <Switch>
+          <div style={{"marginTop":"60px"}}>
+            <Alert/>
+          </div>
+          <div className="container" style={{"marginTop":"30px"}}>
+              
+            <Switch >
               <Route exact path="/">
                 <Home />
               </Route>
@@ -35,9 +46,11 @@ function App() {
                 <SignUp/>
               </Route>
             </Switch>
+            
           </div>
 
         </Router>
+        </AlertState>
       </NoteState>
     </>
   );

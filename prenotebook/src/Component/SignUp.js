@@ -1,7 +1,12 @@
-import React , {useState} from 'react';
+import React , {useState , useContext} from 'react';
 import {useHistory} from "react-router-dom";
 
-export default function SignUp() {
+import { AlertContext } from '../Context/notes/AlertState';
+
+export default function SignUp() { 
+
+    const { showAlert } = useContext(AlertContext);
+
     const history = useHistory();
     const host = "http://localhost:3002";
 
@@ -66,6 +71,10 @@ export default function SignUp() {
         if (json.success){
             localStorage.setItem("token" , json.authtoken);
             history.push("/");
+            showAlert("Succesfully SignUp" , "primary");
+        }
+        else{
+            showAlert("Error in Sign Up" , "warning");
         }
     };
 

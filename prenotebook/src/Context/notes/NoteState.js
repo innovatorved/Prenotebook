@@ -28,12 +28,12 @@ let initialValues = [
 
 const NoteState = (props) => {
   const host = "http://localhost:3002";
-  const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE4ZmM3YjRkMjc1Njg1MzYzODRhMjY3In0sImlhdCI6MTYzNjgxMjc0MH0.QqNRVXQMguBqSR-e8PpYeHf-y1EwV_Vw-m4MGbHPrCM";
 
-  const [notes, setnotes] = useState(initialValues)
+  const [notes, setnotes] = useState(initialValues);
 
 
   const fetchNotes = async()=>{
+    const authToken = localStorage.getItem("token");
     const url = `${host}/api/notes/fetchallnotes`;
     const response = await fetch(
       url,{
@@ -52,6 +52,7 @@ const NoteState = (props) => {
 
   // Add Notes
   const AddNote= async(note)=>{
+    const authToken = localStorage.getItem("token")
     // Call fetch api and update
     const url = `${host}/api/notes/createnotes`;
     const response = await fetch(
@@ -65,7 +66,8 @@ const NoteState = (props) => {
       }
     );
     const jsonRes = await response.json();
-    setnotes([...notes , jsonRes]);
+    setnotes([...notes , jsonRes.saveNote]);
+    return jsonRes;
   };
 
 
@@ -73,6 +75,7 @@ const NoteState = (props) => {
 
   // Delete Note
   const DeleteNote=async(id)=>{
+    const authToken = localStorage.getItem("token")
     const url = `${host}/api/notes/deletenote/${id}`;
     const response = await fetch(
       url,{
@@ -92,6 +95,7 @@ const NoteState = (props) => {
 
 
   const UpdateNote=async(id , note)=>{
+    const authToken = localStorage.getItem("token")
    
     // Call fetch api and update
     const url = `${host}/api/notes/updatenote/${id}`;

@@ -3,13 +3,21 @@ import { NoteContext } from '../Context/notes/NoteState';
 import NoteItem from './NoteItem';
 import AddNote from './AddNote';
 import EditNote from './EditNote';
+import {useHistory} from 'react-router-dom';
 
 export default function Notes() {
     const { notes, fetchNotes } = useContext(NoteContext);
 
+    const history = useHistory();
+
     useEffect(() => {
-        fetchNotes();
-        // eslint-disable-next-line
+        if(localStorage.getItem('token')){
+            console.log("yes");
+            fetchNotes();
+        }else{
+            history.push('/login');
+        }
+        // eslint-disable-next-line 
     }, [])
 
     const ref = useRef(null);

@@ -1,8 +1,10 @@
 import React , {useContext , useState} from 'react'
 import {NoteContext} from '../Context/notes/NoteState';
+import { AlertContext } from '../Context/notes/AlertState';
 
 export default function AddNote() {
-    const {AddNote} = useContext(NoteContext)
+    const {AddNote} = useContext(NoteContext);
+    const { showAlert } = useContext(AlertContext);
 
     const [note, setnote] = useState({"title" : "" , "description":"" , "tags" : ""})
     const ChangesInNote =(e)=>{
@@ -10,10 +12,16 @@ export default function AddNote() {
     };
 
     //Save Note
-    const SaveNote=(e)=>{
+    const SaveNote= async (e)=>{
         e.preventDefault();
-        AddNote(note);
-        setnote({"title" : "" , "description":"" , "tags" : ""});
+        const jsonRes = await AddNote(note);
+        if (jsonRes.success){
+            setnote({"title" : "" , "description":"" , "tags" : ""});
+            showAlert("Note Added" , "primary");
+        }
+        else{
+            showAlert(jsonRes.error , "warning");
+        }
     }
     return (
         <div className="container my-3">

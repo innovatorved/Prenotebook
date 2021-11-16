@@ -83,14 +83,14 @@ export default function SignUp() {
             </div>
 
             <div className="form-row row">
-                <div className="form-group col-md-6">
-                    <label htmlFor="username">Username</label>
-                    <input type="text" className={`form-control ${state?"border border-danger":""}`} value={SignUpInfo.username} onChange={ValueChanged} onBlur={runthis} id="username" name="username" placeholder="john123" />
-                    <small id="emailHelp" className={`form-text text-muted ${state?"":"d-none"}`}>Username Not Available</small>
+            <div className="form-group col-md-6">
+                    <label htmlFor="email">Email address</label>
+                    <input type="email" className="form-control" value={SignUpInfo.email} onChange={ValueChanged} id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email" required={true}/>
                 </div>
                 <div className="form-group col-md-6">
-                    <label htmlFor="email">Email address</label>
-                    <input type="email" className="form-control" value={SignUpInfo.email} onChange={ValueChanged} id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email"/>
+                    <label htmlFor="username">Username</label>
+                    <input type="text" className={`form-control ${state?"border border-danger":""}`} value={SignUpInfo.username} onChange={ValueChanged} onBlur={runthis} id="username" name="username"  placeholder="john123" minLength={6} required={true} />
+                    <small id="emailHelp" className={`form-text text-muted ${state?"":"d-none"}`}>Username Not Available</small>
                 </div>
             </div>
 

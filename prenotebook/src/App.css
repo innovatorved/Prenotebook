@@ -1,3 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Alegreya&display=swap');
+
 i {
     cursor: pointer;
+}
+
+.fontMain{
+    font-family: 'Alegreya', serif;
+}
+
+body{
+    background-color: #eef2e4;
 }

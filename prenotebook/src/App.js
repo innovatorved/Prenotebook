@@ -16,22 +16,24 @@ import Alert from './Component/Alert';
 
 import NoteState from './Context/notes/NoteState';
 import AlertState from './Context/notes/AlertState';
-
+import BackState from './Context/notes/BackState';
 
 
 function App() {
 
+
   return (
-    <>
+    <div>
       <NoteState>
       <AlertState>
+      <BackState>
+        
         <Router>
           <Navbar />
           <div style={{"marginTop":"60px"}}>
             <Alert/>
           </div>
           <div className="container" style={{"marginTop":"30px"}}>
-              
             <Switch >
               <Route exact path="/">
                 <Home />
@@ -46,13 +48,13 @@ function App() {
                 <SignUp/>
               </Route>
             </Switch>
-            
           </div>
-
         </Router>
+
+        </BackState>
         </AlertState>
       </NoteState>
-    </>
+    </div>
   );
 }
 

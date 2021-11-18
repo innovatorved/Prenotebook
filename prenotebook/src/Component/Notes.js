@@ -5,14 +5,16 @@ import AddNote from './AddNote';
 import EditNote from './EditNote';
 import {useHistory} from 'react-router-dom';
 
+import {BackContext} from '../Context/notes/BackState';
+
 export default function Notes() {
     const { notes, fetchNotes } = useContext(NoteContext);
+    const {mode} = useContext(BackContext);
 
     const history = useHistory();
 
     useEffect(() => {
         if(localStorage.getItem('token')){
-            console.log("yes");
             fetchNotes();
         }else{
             history.push('/login');
@@ -37,7 +39,7 @@ export default function Notes() {
             <input type="button" style={{"display": "none"}} ref={ref} className="btn btn-primary d none" data-toggle="modal" data-target="#exampleModal"/>
             <EditNote note={note} setnote={setnote}/>
             <div className="row my-3">
-                <h2>Notes</h2>
+                <h2 className="fontMain" style={{"color" : mode==="light"?"":"#dee4ce"}}>Notes</h2>
                 {
                     notes.map((note) => {
                         return (

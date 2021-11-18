@@ -8,7 +8,6 @@ import { NoteContext } from '../Context/notes/NoteState';
 export default function Login() {
     const { showAlert } = useContext(AlertContext);
     const {host} = useContext(NoteContext);
-    console.log(host);
 
     const history = useHistory();
 

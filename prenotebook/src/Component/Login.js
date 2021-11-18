@@ -2,11 +2,13 @@ import React , {useState , useContext} from 'react';
 import {useHistory} from 'react-router-dom';
 
 import { AlertContext } from '../Context/notes/AlertState';
+import { NoteContext } from '../Context/notes/NoteState';
 
-const host = "http://localhost:3002";
 
 export default function Login() {
     const { showAlert } = useContext(AlertContext);
+    const {host} = useContext(NoteContext);
+    console.log(host);
 
     const history = useHistory();
 

@@ -3,11 +3,12 @@ import {useHistory} from 'react-router-dom';
 
 import { AlertContext } from '../Context/notes/AlertState';
 import { NoteContext } from '../Context/notes/NoteState';
-
+import { BackContext } from '../Context/notes/BackState';
 
 export default function Login() {
     const { showAlert } = useContext(AlertContext);
     const {host} = useContext(NoteContext);
+    const {mode} = useContext(BackContext);
 
     const history = useHistory();
 
@@ -52,15 +53,18 @@ export default function Login() {
         <div>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="exampleInputEmail1">Email address</label>
-                    <input type="email" name="email" value={credentials.email} onChange={valueChanged} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
+                    <label htmlFor="exampleInputEmail1" style={{"color" : mode==="light"?"":"#dee4ce"}}>Email address</label>
+
+                    <input type="email" style={{"backgroundColor" : mode==="light"?"":"#667574" ,"color" : mode==="light"?"":"white"}} name="email" value={credentials.email} onChange={valueChanged} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
+
                     <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="exampleInputPassword1">Password</label>
-                    <input type="password" name="password" value={credentials.password} onChange={valueChanged} className="form-control" id="exampleInputPassword1" placeholder="Password"/>
+                    <label htmlFor="exampleInputPassword1" style={{"color" : mode==="light"?"":"#dee4ce"}}>Password</label>
+
+                    <input type="password" style={{"backgroundColor" : mode==="light"?"":"#667574","color" : mode==="light"?"":"white"}} name="password" value={credentials.password} onChange={valueChanged} className="form-control" id="exampleInputPassword1" placeholder="Password"/>
                 </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary my-2">Submit</button>
             </form>
         </div>
     )

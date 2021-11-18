@@ -1,8 +1,11 @@
 import React, { useContext , useRef} from 'react';
 import { NoteContext } from '../Context/notes/NoteState';
+import { BackContext } from '../Context/notes/BackState';
 
 export default function EditNote(props) {
     const {UpdateNote} = useContext(NoteContext);
+    const {mode} = useContext(BackContext);
+
     const {note , setnote} = props;
 
     const refClose = useRef(null);
@@ -14,9 +17,9 @@ export default function EditNote(props) {
         <div>
             <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
-                    <div className="modal-content">
+                    <div className="modal-content" style={{"backgroundColor" : mode==="light"?"#eef2e4":"#32383e"}}>
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">Edit Note</h5>
+                            <h5 className="modal-title" style={{"color" : mode==="light"?"":"#dee4ce"}} id="exampleModalLabel">Edit Note</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -24,26 +27,26 @@ export default function EditNote(props) {
                         <div className="modal-body">
                             <form className="my-3">
                                 <div className="form-group">
-                                    <label htmlFor="title">Title</label>
-                                    <input type="text" value={note.title} className="form-control" id="title" name="title" placeholder="Title" onChange={NoteEditing} />
+                                    <label htmlFor="title" style={{"color" : mode==="light"?"":"#dee4ce"}}>Title</label>
+                                    <input type="text" style={{"backgroundColor" : mode==="light"?"":"#667574" ,"color" : mode==="light"?"":"white"}} value={note.title} className="form-control" id="title" name="title" placeholder="Title" onChange={NoteEditing} />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="description">Description</label>
-                                    <textarea type="text" value={note.description} className="form-control" id="description" name="description" placeholder="Description" onChange={NoteEditing}></textarea>
+                                    <label htmlFor="description" style={{"color" : mode==="light"?"":"#dee4ce"}}>Description</label>
+                                    <textarea type="text" style={{"backgroundColor" : mode==="light"?"":"#667574" ,"color" : mode==="light"?"":"white"}} value={note.description} className="form-control" id="description" name="description" placeholder="Description" onChange={NoteEditing}></textarea>
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="etag">Tag</label>
-                                    <input type="text" value={note.tag} className="form-control" id="etag" name="etag" placeholder="Description" onChange={NoteEditing} />
+                                    <label htmlFor="tag" style={{"color" : mode==="light"?"":"#dee4ce"}}>Tag</label>
+                                    <input type="text" style={{"backgroundColor" : mode==="light"?"":"#667574" ,"color" : mode==="light"?"":"white"}} value={note.tag} className="form-control" id="tag" name="tag" placeholder="Description" onChange={NoteEditing} />
                                 </div>
                                 <div className="form-group form-check">
-                                    <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-                                    <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
+                                    <input type="checkbox" style={{"backgroundColor" : mode==="light"?"":"#667574" ,"color" : mode==="light"?"":"white"}} className="form-check-input" id="exampleCheck1" />
+                                    <label className="form-check-label" style={{"color" : mode==="light"?"":"#dee4ce"}} htmlFor="exampleCheck1">Check me out</label>
                                 </div>
                             </form>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" ref={refClose} className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" disabled={note.title.length<3 || note.description.length<10} className="btn btn-primary" onClick={(()=>{
+                            <button type="button" ref={refClose} className="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" disabled={note.title.length<3 || note.description.length<10} className="btn btn-outline-info" onClick={(()=>{
                                     UpdateNote(note._id , note);
                                     refClose.current.click();
                                 })}>Save changes</button>

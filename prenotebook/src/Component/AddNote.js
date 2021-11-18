@@ -9,7 +9,7 @@ export default function AddNote() {
     const {showAlert} = useContext(AlertContext);
     const {mode} = useContext(BackContext);
 
-    const [note, setnote] = useState({"title" : "" , "description":"" , "tags" : ""})
+    const [note, setnote] = useState({"title" : "" , "description":"" , "tag" : ""})
     const ChangesInNote =(e)=>{
         setnote({...note , [e.target.name]: e.target.value});
     };
@@ -20,7 +20,7 @@ export default function AddNote() {
         e.preventDefault();
         const jsonRes = await AddNote(note);
         if (jsonRes.success){
-            setnote({"title" : "" , "description":"" , "tags" : ""});
+            setnote({"title" : "" , "description":"" , "tag" : ""});
             showAlert("Note Added" , "primary");
         }
         else{
@@ -41,7 +41,7 @@ export default function AddNote() {
                 </div>
                 <div className="form-group my-2">
                     <label htmlFor="tag" style={{"color" : mode==="light"?"":"#dee4ce"}}>Tag</label>
-                    <input type="text" style={{"backgroundColor" : mode==="light"?"":"#667574" , "color" : mode==="light"?"":"white"}} className="form-control" id="tags"  name="tags" value={note.tags} placeholder="General" onChange={ChangesInNote}/>
+                    <input type="text" style={{"backgroundColor" : mode==="light"?"":"#667574" , "color" : mode==="light"?"":"white"}} className="form-control" id="tag"  name="tag" value={note.tag} placeholder="General" onChange={ChangesInNote}/>
                 </div>
                 <button type="submit" disabled={note.title.length<3 || note.description.length<10} className="btn btn-outline-info" onClick={SaveNote}>Save</button>
             </form>

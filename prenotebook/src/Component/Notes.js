@@ -41,7 +41,7 @@ export default function Notes() {
             <div className="row my-3">
                 <h2 className="fontMain" style={{"color" : mode==="light"?"":"#dee4ce"}}>Notes</h2>
                 {
-                    notes.map((note) => {
+                    notes.map(item => item).reverse().map((note) => {
                         return (
                             <NoteItem key={note._id} UpdateNote={UpdateNote} note={note} />
                         )

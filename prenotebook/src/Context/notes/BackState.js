@@ -15,7 +15,7 @@ const BackState = (props) => {
             document.body.style.backgroundColor = "#32383e";
         }else{
             setmode("light");
-            document.body.style.backgroundColor = "#eef2e4";            
+            document.body.style.backgroundColor = "#eef2e4";
         }
     };
     

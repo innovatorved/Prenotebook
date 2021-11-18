@@ -3,6 +3,10 @@ import { Link ,useLocation ,useHistory } from "react-router-dom";
 
 import { BackContext } from '../Context/notes/BackState';
 
+// Import Image
+import notebookDark from './notebookDark.png';
+import notebookLight from './notebookLight.png';
+
 export default function Navbar() {
 
     const {mode , ChangeMode} = useContext(BackContext);
@@ -12,7 +16,7 @@ export default function Navbar() {
 
     const handleLogout=()=>{
         localStorage.removeItem("token");
-        history.pushState("/login");
+        history.push("/login");
     }
 
     
@@ -21,7 +25,8 @@ export default function Navbar() {
         <div className="fontMain">
             <nav className={`navbar fixed-top navbar-expand-lg navbar-${mode} bg-${mode}`}>
                 <div className="container-fluid">
-                    <Link className="navbar-brand" to="/"><h4>Prenotebook</h4></Link>
+                    <img src={mode==="light"?notebookDark:notebookLight} alt="Logo" width={30} height={30} />
+                    <Link className="navbar-brand" to="/"><h4>&nbsp; Prenotebook</h4></Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                     </button>

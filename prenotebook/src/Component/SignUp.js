@@ -2,13 +2,14 @@ import React , {useState , useContext} from 'react';
 import {useHistory} from "react-router-dom";
 
 import { AlertContext } from '../Context/notes/AlertState';
+import { NoteContext } from '../Context/notes/NoteState';
 
 export default function SignUp() { 
 
     const { showAlert } = useContext(AlertContext);
 
     const history = useHistory();
-    const host = "http://localhost:3002";
+    const {host} = useContext(NoteContext);
 
     const [state, setstate] = useState(false);
     const [SignUpInfo, setSignUpInfo] = useState({

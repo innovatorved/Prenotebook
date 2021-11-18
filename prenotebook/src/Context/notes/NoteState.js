@@ -27,7 +27,7 @@ let initialValues = [
 
 
 const NoteState = (props) => {
-  const host = "http://localhost:3002";
+  const host = "https://prenotebook-backend.herokuapp.com";
 
   const [notes, setnotes] = useState(initialValues);
 
@@ -124,7 +124,7 @@ const NoteState = (props) => {
     }
   }
     return (
-        <NoteContext.Provider value={{notes, AddNote , DeleteNote ,fetchNotes,UpdateNote , setnotes}}>
+        <NoteContext.Provider value={{host , notes, AddNote , DeleteNote ,fetchNotes,UpdateNote , setnotes}}>
             {props.children}
         </NoteContext.Provider>
     )

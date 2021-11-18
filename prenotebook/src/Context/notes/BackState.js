@@ -7,6 +7,11 @@ const BackContext = createContext();
 const BackState = (props) => {
 
     const [mode, setmode] = useState("light");
+    const [search, setsearch] = useState("");
+
+    const ChangeSearch=(value)=>{
+        setsearch(value);
+    }
 
     const ChangeMode = () => {
         // document.body.style.backgroundColor = mode==="light"?"#eef2e4":"#32383e;";
@@ -20,7 +25,7 @@ const BackState = (props) => {
     };
     
     return (
-        <BackContext.Provider value={{mode , ChangeMode}}>
+        <BackContext.Provider value={{mode , ChangeMode , search , ChangeSearch}}>
             {props.children}
         </BackContext.Provider>
     )

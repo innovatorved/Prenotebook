@@ -51,6 +51,7 @@ export default function Login() {
     }
     return (
         <div>
+            <h1 className="fontMain d-flex justify-content-center" style={{"color": mode==="light"?"":"#dee4ce"}}>Login</h1><br/>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="exampleInputEmail1" style={{"color" : mode==="light"?"":"#dee4ce"}}>Email address</label>

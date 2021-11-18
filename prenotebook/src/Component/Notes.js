@@ -9,7 +9,7 @@ import {BackContext} from '../Context/notes/BackState';
 
 export default function Notes() {
     const { notes, fetchNotes } = useContext(NoteContext);
-    const {mode} = useContext(BackContext);
+    const {mode , search} = useContext(BackContext);
 
     const history = useHistory();
 
@@ -41,7 +41,15 @@ export default function Notes() {
             <div className="row my-3">
                 <h2 className="fontMain" style={{"color" : mode==="light"?"":"#dee4ce"}}>Notes</h2>
                 {
+                    search===""?
                     notes.map(item => item).reverse().map((note) => {
+                        return (
+                            <NoteItem key={note._id} UpdateNote={UpdateNote} note={note} />
+                        )
+                    }):
+                    notes.map(item => item).reverse().filter((note)=>{
+                        return note.title.includes(search) || note.description.includes(search) || note.tag.includes(search)
+                    }).map((note) => {
                         return (
                             <NoteItem key={note._id} UpdateNote={UpdateNote} note={note} />
                         )

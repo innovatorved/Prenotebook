@@ -82,8 +82,9 @@ export default function SignUp() {
     };
 
     return (
+        <>
+        <h1 className="fontMain d-flex justify-content-center" style={{"color": mode==="light"?"":"#dee4ce"}}>SignUp</h1><br/>
         <div>
-            <h1 className="fontMain" style={{"color": mode==="light"?"":"#dee4ce"}}>SignUp</h1>
             <form onSubmit={SignUpToAccount}>
             <div className="form-row row">
                 <div className="my-2 form-group col-md-6">
@@ -121,5 +122,6 @@ export default function SignUp() {
             <button type="submit" disabled={SignUpInfo.password!==SignUpInfo.cpassword} className="btn btn-primary my-3">Sign Up</button>
         </form>
         </div>
+        </>
     )
 }

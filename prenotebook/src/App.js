@@ -24,10 +24,9 @@ function App() {
 
   return (
     <div>
+      <BackState>
       <NoteState>
       <AlertState>
-      <BackState>
-        
         <Router>
           <Navbar />
           <div style={{"marginTop":"60px"}}>
@@ -50,10 +49,9 @@ function App() {
             </Switch>
           </div>
         </Router>
-
-        </BackState>
         </AlertState>
       </NoteState>
+      </BackState>
     </div>
   );
 }

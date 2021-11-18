@@ -9,7 +9,7 @@ import notebookLight from './notebookLight.png';
 
 export default function Navbar() {
 
-    const {mode , ChangeMode} = useContext(BackContext);
+    const {mode , ChangeMode , search , ChangeSearch} = useContext(BackContext);
 
     const location = useLocation();
     const history = useHistory();
@@ -17,6 +17,10 @@ export default function Navbar() {
     const handleLogout=()=>{
         localStorage.removeItem("token");
         history.push("/login");
+    }
+
+    const handleSearchChange=(e)=>{
+        ChangeSearch(e.target.value);
     }
 
     
@@ -53,8 +57,7 @@ export default function Navbar() {
                             <button onClick={handleLogout} className="btn btn-outline-info me-2">Logout</button>
                         }
 
-                        <input className="form-control me-2" style={{"backgroundColor" : mode==="light"?"white":"#667574" , "color" : mode==="light"?"":"#cfd5c1"}} type="search" placeholder="Search" aria-label="Search"/>
-                        <button className="btn btn-outline-success" type="submit">Search</button>
+                        <input className="form-control me-2" style={{"backgroundColor" : mode==="light"?"white":"#667574" , "color" : mode==="light"?"":"#cfd5c1"}} type="search" value={search} onChange={handleSearchChange} placeholder="Search" aria-label="Search"/>
                     </form>
                     </div>
                 </div>

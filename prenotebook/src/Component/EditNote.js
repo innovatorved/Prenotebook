@@ -36,11 +36,7 @@ export default function EditNote(props) {
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="tag" style={{"color" : mode==="light"?"":"#dee4ce"}}>Tag</label>
-                                    <input type="text" style={{"backgroundColor" : mode==="light"?"":"#667574" ,"color" : mode==="light"?"":"white"}} value={note.tag} className="form-control" id="tag" name="tag" placeholder="Description" onChange={NoteEditing} />
-                                </div>
-                                <div className="form-group form-check">
-                                    <input type="checkbox" style={{"backgroundColor" : mode==="light"?"":"#667574" ,"color" : mode==="light"?"":"white"}} className="form-check-input" id="exampleCheck1" />
-                                    <label className="form-check-label" style={{"color" : mode==="light"?"":"#dee4ce"}} htmlFor="exampleCheck1">Check me out</label>
+                                    <input type="text" style={{"backgroundColor" : mode==="light"?"":"#667574" ,"color" : mode==="light"?"":"white"}} value={note.tag} className="form-control" id="tag" name="tag" placeholder="tag" onChange={NoteEditing} />
                                 </div>
                             </form>
                         </div>

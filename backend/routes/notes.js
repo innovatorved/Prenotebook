@@ -45,7 +45,10 @@ router.post("/createnotes" , fetchUserDetails ,[
 
     try {
         const userID = req.user.id;
-        const {title , description , tag} = req.body;
+        let {title , description , tag} = req.body;
+        if (tag==="" || tag===" "){
+            tag = "General";
+        }
         let notes = new Notes({title , description , tag , user : userID});
         let saveNote = await notes.save();
         success = true;

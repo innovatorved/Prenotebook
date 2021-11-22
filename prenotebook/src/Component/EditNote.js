@@ -3,7 +3,7 @@ import { NoteContext } from '../Context/notes/NoteState';
 import { BackContext } from '../Context/notes/BackState';
 
 export default function EditNote(props) {
-    const {UpdateNote} = useContext(NoteContext);
+    const {UpdateNote , playing , speak} = useContext(NoteContext);
     const {mode} = useContext(BackContext);
 
     const {note , setnote} = props;
@@ -19,7 +19,8 @@ export default function EditNote(props) {
                 <div className="modal-dialog" role="document">
                     <div className="modal-content" style={{"backgroundColor" : mode==="light"?"#eef2e4":"#32383e"}}>
                         <div className="modal-header">
-                            <h5 className="modal-title" style={{"color" : mode==="light"?"":"#dee4ce"}} id="exampleModalLabel">Edit Note</h5>
+                            <h5 className="modal-title" style={{"color" : mode==="light"?"":"#dee4ce"}} id="exampleModalLabel">Your Note</h5>
+                            <i className={`fas fa-${playing===true?"pause":"play"} ${mode!=="light"?"i-color-wh":""}`} onClick={()=>speak(note)} ></i>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -28,15 +29,15 @@ export default function EditNote(props) {
                             <form className="my-3">
                                 <div className="form-group">
                                     <label htmlFor="title" style={{"color" : mode==="light"?"":"#dee4ce"}}>Title</label>
-                                    <input type="text" style={{"backgroundColor" : mode==="light"?"":"#667574" ,"color" : mode==="light"?"":"white"}} value={note.title} className="form-control" id="title" name="title" placeholder="Title" onChange={NoteEditing} />
+                                    <input type="text" style={{"backgroundColor" : mode==="light"?"":"#667574" ,"color" : mode==="light"?"":"white"}} value={note.title} className="form-control" id="etitle" name="title" placeholder="Title" onChange={NoteEditing} />
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="description" style={{"color" : mode==="light"?"":"#dee4ce"}}>Description</label>
-                                    <textarea type="text" style={{"backgroundColor" : mode==="light"?"":"#667574" ,"color" : mode==="light"?"":"white"}} value={note.description} className="form-control" id="description" name="description" placeholder="Description" onChange={NoteEditing}></textarea>
+                                    <textarea type="text" style={{"backgroundColor" : mode==="light"?"":"#667574" ,"color" : mode==="light"?"":"white"}} value={note.description} rows={5} className="form-control" id="edescription" name="description" placeholder="Description" onChange={NoteEditing}></textarea>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="tag" style={{"color" : mode==="light"?"":"#dee4ce"}}>Tag</label>
-                                    <input type="text" style={{"backgroundColor" : mode==="light"?"":"#667574" ,"color" : mode==="light"?"":"white"}} value={note.tag} className="form-control" id="tag" name="tag" placeholder="tag" onChange={NoteEditing} />
+                                    <input type="text" style={{"backgroundColor" : mode==="light"?"":"#667574" ,"color" : mode==="light"?"":"white"}} value={note.tag} className="form-control" id="etag" name="tag" placeholder="tag" onChange={NoteEditing} />
                                 </div>
                             </form>
                         </div>

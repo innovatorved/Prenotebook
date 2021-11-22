@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Alegreya&display=swap');
 
-i {
+i , .noteItem{
     cursor: pointer;
 }
 
@@ -10,4 +10,8 @@ i {
 
 body{
     background-color: #eef2e4;
+}
+
+.i-color-wh{
+    color: white;
 }

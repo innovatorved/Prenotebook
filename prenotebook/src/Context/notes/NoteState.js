@@ -1,5 +1,10 @@
 import { createContext , useState} from 'react';
 
+
+// Init SpeechSynth API
+const synth = window.speechSynthesis;
+const voices = synth.getVoices();
+
 // Createcontext
 const NoteContext = createContext();
 
@@ -23,14 +28,12 @@ let initialValues = [
         "description": "",
         "__v": 0
       }
-    ];
-
+];
 
 const NoteState = (props) => {
   const host = "https://prenotebook-backend.herokuapp.com";
 
   const [notes, setnotes] = useState(initialValues);
-
 
   const fetchNotes = async()=>{
     const authToken = localStorage.getItem("token");
@@ -92,6 +95,46 @@ const NoteState = (props) => {
     setnotes(notes.filter((note)=>{return note._id!==id}))
   };
 
+    
+  const [playing, setplaying] = useState(false);
+  const speak = (note) => {
+    if (synth.speaking || note === null ||note==="") {
+      // console.error('Already speaking...');
+      synth.cancel();
+      return;
+    }
+
+    // Check if speaking
+    const textInput = note.title +"       "+note.description;
+
+
+    if (textInput !== '') {
+      const speakText = new SpeechSynthesisUtterance(textInput);
+      speakText.onstart=e=>{
+        setplaying(true);
+      }
+      speakText.onend = e => {
+        // console.log('Done speaking...');
+        setplaying(false);
+      };
+      speakText.onerror = e => {
+        // console.error('Something went wrong');
+        setplaying(false);
+      };
+      const selectedVoice = "Microsoft Zira Desktop - English (United States)";
+      voices.forEach(voice => {
+        if (voice.name === selectedVoice) {
+          speakText.voice = voice;
+        }
+      });
+      speakText.rate = "1";
+      speakText.pitch = "1";
+      // Speak
+      synth.speak(speakText);
+    }
+  };
+
+
 
 
   const UpdateNote=async(id , note)=>{
@@ -110,7 +153,6 @@ const NoteState = (props) => {
     );
     // eslint-disable-next-line
     const jsonRes = await response.json();
-
     // search for note with id and Update
     let newNotes = JSON.parse(JSON.stringify(notes));
     for (let index = 0; index < notes.length; index++) {
@@ -122,9 +164,10 @@ const NoteState = (props) => {
         break;
       }
     }
+  
   }
     return (
-        <NoteContext.Provider value={{host , notes, AddNote , DeleteNote ,fetchNotes,UpdateNote , setnotes}}>
+        <NoteContext.Provider value={{host , notes, AddNote , DeleteNote ,fetchNotes,UpdateNote , setnotes ,speak , playing}}>
             {props.children}
         </NoteContext.Provider>
     )

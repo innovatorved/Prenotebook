@@ -41,7 +41,7 @@ export default function EditNote(props) {
                             </form>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-outline-primary "><i className={`fas fa-${playing===true?"pause":"play"} ${mode!=="light"?"i-color-wh":""}`} onClick={()=>speak(note)} ></i></button>
+                            <button type="button" className="btn btn-outline-primary" title={`${playing!==true?"Play Note":"Stop Playing"}`} ><i className={`fas fa-${playing===true?"pause":"play"}`} onClick={()=>speak(note)} ></i></button>
                             <button type="button" ref={refClose} className="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                             <button type="button" disabled={note.title.length<3 || note.description.length<10} className="btn btn-outline-info" onClick={(()=>{
                                     UpdateNote(note._id , note);

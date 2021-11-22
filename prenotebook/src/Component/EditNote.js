@@ -20,7 +20,6 @@ export default function EditNote(props) {
                     <div className="modal-content" style={{"backgroundColor" : mode==="light"?"#eef2e4":"#32383e"}}>
                         <div className="modal-header">
                             <h5 className="modal-title" style={{"color" : mode==="light"?"":"#dee4ce"}} id="exampleModalLabel">Your Note</h5>
-                            <i className={`fas fa-${playing===true?"pause":"play"} ${mode!=="light"?"i-color-wh":""}`} onClick={()=>speak(note)} ></i>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -42,6 +41,7 @@ export default function EditNote(props) {
                             </form>
                         </div>
                         <div className="modal-footer">
+                            <button type="button" className="btn btn-outline-primary "><i className={`fas fa-${playing===true?"pause":"play"} ${mode!=="light"?"i-color-wh":""}`} onClick={()=>speak(note)} ></i></button>
                             <button type="button" ref={refClose} className="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                             <button type="button" disabled={note.title.length<3 || note.description.length<10} className="btn btn-outline-info" onClick={(()=>{
                                     UpdateNote(note._id , note);

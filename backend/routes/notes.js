@@ -45,11 +45,11 @@ router.post("/createnotes" , fetchUserDetails ,[
 
     try {
         const userID = req.user.id;
-        let {title , description , tag} = req.body;
+        let {title , description , tag , share} = req.body;
         if (tag==="" || tag===" "){
             tag = "General";
         }
-        let notes = new Notes({title , description , tag , user : userID});
+        let notes = new Notes({title , description , tag , share ,user : userID});
         let saveNote = await notes.save();
         success = true;
         return res.json({success , saveNote});
@@ -76,12 +76,13 @@ router.put("/updatenote/:id" , fetchUserDetails , async(req , res) => {
 
         if (NoteUser !== ReqFromUser){return res.status(401).send("UnAuthorished Access")};// Check the owner of note is real
 
-        const { title , description , tag } = req.body;
+        const { title , description , share , tag } = req.body;
         const updateDetails = {};
 
         if(title){updateDetails.title = title};
         if(description){updateDetails.description = description};
         if(tag){updateDetails.tag = tag};
+        if(share){updateDetails.share = share};
         // console.log(updateDetails);
         // Update the note using Notes Schema
         UpdateNote1 = await Notes.findByIdAndUpdate(RecNoteId , {$set : updateDetails} , {new:true});

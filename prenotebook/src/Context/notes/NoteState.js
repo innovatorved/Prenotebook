@@ -31,7 +31,7 @@ let initialValues = [
 ];
 
 const NoteState = (props) => {
-  const host = "https://prenotebook-backend.herokuapp.com";
+  const host = "http://localhost:3002";
 
   const [notes, setnotes] = useState(initialValues);
 

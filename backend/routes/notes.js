@@ -117,4 +117,22 @@ router.delete("/deletenote/:id" , fetchUserDetails , async(req , res) => {
     }
 })
 
+router.get("/sharedNote/:user/:id" , async(req , res) => {
+    let success = "false";
+    try{
+        const noteId = req.params.id;
+        const username = req.params.user;
+        const thisNote = await Notes.findById(noteId);
+        success = "false";
+        if(!thisNote){return res.json({success , "error" : "Note Not Found"})};
+        console.log(thisNote.user);
+        console.log(thisNote.user().username);
+        res.json({success});
+
+    }
+    catch{
+        // http://localhost:3002/api/notes/sharedNote/vedgupta/619c754418d700f4774dc7b3
+    }
+})
+
 module.exports = router;

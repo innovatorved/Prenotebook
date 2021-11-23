@@ -117,21 +117,17 @@ router.delete("/deletenote/:id" , fetchUserDetails , async(req , res) => {
     }
 })
 
-router.get("/sharedNote/:user/:id" , async(req , res) => {
-    let success = "false";
-    try{
+router.get("/sharedNote/:id" , async(req , res) => {
+    try {
         const noteId = req.params.id;
-        const username = req.params.user;
-        const thisNote = await Notes.findById(noteId);
-        success = "false";
-        if(!thisNote){return res.json({success , "error" : "Note Not Found"})};
-        console.log(thisNote.user);
-        console.log(thisNote.user().username);
-        res.json({success});
-
-    }
-    catch{
-        // http://localhost:3002/api/notes/sharedNote/vedgupta/619c754418d700f4774dc7b3
+        const thisNote = await Notes.findById(noteId , async(err , note)=>{
+            if(err || note.share === false){return res.json({"success":"false" , "error" : "Note Not Found"})}
+            const mynote = await note.populate({path: "user" , model : "user" , select: { _id:0 , name:1 , username:1}});
+            return res.json({"success":"true" , mynote});
+        })
+        return res.status(500).json({"success":"false"});
+    } catch (error) {
+        console.error(error.message);
     }
 })
 

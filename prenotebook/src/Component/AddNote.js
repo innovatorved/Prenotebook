@@ -1,7 +1,7 @@
-import React , {useContext , useState} from 'react'
+import React , {useContext , useState} from 'react';
+
 import {NoteContext} from '../Context/notes/NoteState';
 import { AlertContext } from '../Context/notes/AlertState';
-
 import {BackContext} from '../Context/notes/BackState';
 
 export default function AddNote() {

@@ -45,11 +45,11 @@ router.post("/createnotes" , fetchUserDetails ,[
 
     try {
         const userID = req.user.id;
-        let {title , description , tag} = req.body;
+        let {title , description , tag } = req.body;
         if (tag==="" || tag===" "){
             tag = "General";
         }
-        let notes = new Notes({title , description , tag , user : userID});
+        let notes = new Notes({title , description , tag  ,user : userID});
         let saveNote = await notes.save();
         success = true;
         return res.json({success , saveNote});
@@ -76,12 +76,13 @@ router.put("/updatenote/:id" , fetchUserDetails , async(req , res) => {
 
         if (NoteUser !== ReqFromUser){return res.status(401).send("UnAuthorished Access")};// Check the owner of note is real
 
-        const { title , description , tag } = req.body;
+        let { title , description , share , tag } = req.body;
         const updateDetails = {};
 
         if(title){updateDetails.title = title};
         if(description){updateDetails.description = description};
         if(tag){updateDetails.tag = tag};
+        updateDetails.share = share;
         // console.log(updateDetails);
         // Update the note using Notes Schema
         UpdateNote1 = await Notes.findByIdAndUpdate(RecNoteId , {$set : updateDetails} , {new:true});
@@ -113,6 +114,20 @@ router.delete("/deletenote/:id" , fetchUserDetails , async(req , res) => {
     } catch (error) {
         // Run if any error occurs in last
         return res.status(500).send("Internal Server try after some time2");
+        console.error(error.message);
+    }
+})
+
+router.get("/sharedNote/:id" , async(req , res) => {
+    try {
+        const noteId = req.params.id;
+        const thisNote = await Notes.findById(noteId , async(err , note)=>{
+            if(err || note.share === false){return res.json({"success":"false" , "error" : "Note Not Found"})}
+            const mynote = await note.populate({path: "user" , model : "user" , select: { _id:0 , name:1 , username:1}});
+            return res.json({"success":"true" , mynote});
+        })
+        return res.status(500).json({"success":"false"});
+    } catch (error) {
         console.error(error.message);
     }
 })

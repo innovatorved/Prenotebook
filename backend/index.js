@@ -1,6 +1,6 @@
 const connectToMongo = require("./mongoDb"); // Import mongoDb.js filee
 const express = require('express'); // Import Express Module
-var cors = require('cors') // ALllow CORS
+var cors = require('cors'); // ALllow CORS
 require('dotenv').config()
 
 // Lets Connect to MongoDb cluster
@@ -11,12 +11,7 @@ const app = express();
 const port = 3002;
 
 // allow CORS using middleware
-app.use(cors())
-
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
+app.use(cors());
 // for accepting the request body and send json we need a middlewaere
 app.use(express.json());
 
@@ -27,5 +22,5 @@ app.use("/api/notes" , require("./routes/notes"));  // Route notes.js
 
 // Listen app to port
 app.listen(port, () => {
-  console.log(`PreNotebook app listening at https://localhost:${port}/`);
+  console.log(`PreNotebook app listening at http://localhost:${port}/`);
 });

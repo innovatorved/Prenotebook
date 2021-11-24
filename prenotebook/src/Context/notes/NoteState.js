@@ -32,6 +32,7 @@ let initialValues = [
 
 const NoteState = (props) => {
   const host = "https://prenotebook-backend.herokuapp.com";
+  // const host = "http://localhost:3002"
 
   const [notes, setnotes] = useState(initialValues);
 
@@ -51,6 +52,21 @@ const NoteState = (props) => {
     // Set the Notes
     setnotes(FetchedNotes);
   };
+
+  const [searchNote, setsearchNote] = useState("");
+  const SearchShareNote=async(id)=>{
+    const url = `${host}/api/notes/sharedNote/${id}`;
+    const response = await fetch(
+      url,{
+        method:'GET',
+        headers : {
+          "Content-Type" : "application/json"
+        }
+      }
+    )
+    const FetchedShareNote = await response.json();
+    setsearchNote(FetchedShareNote);
+  }
 
 
   // Add Notes
@@ -160,6 +176,7 @@ const NoteState = (props) => {
         newNotes[index].title = note.title;
         newNotes[index].description = note.description;
         newNotes[index].tag = note.tag;
+        newNotes[index].share = note.share;
         setnotes(newNotes);
         break;
       }
@@ -167,7 +184,7 @@ const NoteState = (props) => {
   
   }
     return (
-        <NoteContext.Provider value={{host , notes, AddNote , DeleteNote ,fetchNotes,UpdateNote , setnotes ,speak , playing}}>
+        <NoteContext.Provider value={{host , notes, AddNote , DeleteNote ,fetchNotes,UpdateNote , setnotes ,speak , playing ,searchNote, SearchShareNote}}>
             {props.children}
         </NoteContext.Provider>
     )

@@ -13,6 +13,7 @@ import About from './Component/About';
 import Login from './Component/Login';
 import SignUp from './Component/SignUp';
 import Alert from './Component/Alert';
+import SearchNote from './Component/SearchNote';
 
 import NoteState from './Context/notes/NoteState';
 import AlertState from './Context/notes/AlertState';
@@ -46,6 +47,10 @@ function App() {
               <Route exact path="/signup">
                 <SignUp/>
               </Route>
+              <Route exact path="/note/:id">
+                <SearchNote/>
+              </Route>
+
             </Switch>
           </div>
         </Router>

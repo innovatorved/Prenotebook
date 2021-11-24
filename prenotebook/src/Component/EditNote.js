@@ -1,17 +1,43 @@
-import React, { useContext , useRef} from 'react';
+import React, { useContext , useRef } from 'react';
+
 import { NoteContext } from '../Context/notes/NoteState';
 import { BackContext } from '../Context/notes/BackState';
+import { AlertContext } from '../Context/notes/AlertState';
 
+import Alert from './Alert';
+  
 export default function EditNote(props) {
+
+    const {showAlert} = useContext(AlertContext);
+
     const {UpdateNote , playing , speak} = useContext(NoteContext);
     const {mode} = useContext(BackContext);
-
     const {note , setnote} = props;
 
     const refClose = useRef(null);
+
     const NoteEditing =(e)=>{
         setnote({...note,[e.target.name]: e.target.value});
     }
+    
+    const ChangeShare=()=>{
+        if(note.share === true){
+            setnote({...note , share : false});
+            showAlert("Note Private, Kindly Save the Changes" , "primary");
+        }
+        else{
+            setnote({...note , share : true});
+            showAlert("Note Public, Kindly Save the Changes" , "warning");
+        }
+    }
+
+    const CopyToClipBoard=()=>{
+        const noteUrl = `${window.location.origin}/note/${note._id}`;
+        navigator.clipboard.writeText(noteUrl);
+        showAlert("Link Copied" , "primary");
+    }
+
+    
 
     return (
         <div>
@@ -19,13 +45,22 @@ export default function EditNote(props) {
                 <div className="modal-dialog" role="document">
                     <div className="modal-content" style={{"backgroundColor" : mode==="light"?"#eef2e4":"#32383e"}}>
                         <div className="modal-header">
-                            <h5 className="modal-title" style={{"color" : mode==="light"?"":"#dee4ce"}} id="exampleModalLabel">Your Note</h5>
+                            <div>
+                                <h5 className="modal-title fontMain" style={{"color" : mode==="light"?"":"#dee4ce"}} id="exampleModalLabel">Your Note</h5>
+                                <div className="form-check form-switch" >
+                                    <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked={note.share?true:false} readOnly={true} onClick={ChangeShare}/>
+                                    <label className={`form-check-label text-${mode==="light"?"dark":"light"} mx-2 fontMain`} htmlFor="flexSwitchCheckDefault">Sharing</label>
+                                </div>
+                            </div>
+                            <button className={`btn btn-outline-info me-2 ${!note.share?"d-none":""}`} title={"Copy Link"} onClick={CopyToClipBoard}><i className="far fa-copy"></i></button>
+                            
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+                        <div className="mx-2 my-1"><Alert/></div>
                         <div className="modal-body">
-                            <form className="my-3">
+                            <form>
                                 <div className="form-group">
                                     <label htmlFor="title" style={{"color" : mode==="light"?"":"#dee4ce"}}>Title</label>
                                     <input type="text" style={{"backgroundColor" : mode==="light"?"":"#667574" ,"color" : mode==="light"?"":"white"}} value={note.title} className="form-control" id="etitle" name="title" placeholder="Title" onChange={NoteEditing} />
@@ -39,6 +74,7 @@ export default function EditNote(props) {
                                     <input type="text" style={{"backgroundColor" : mode==="light"?"":"#667574" ,"color" : mode==="light"?"":"white"}} value={note.tag} className="form-control" id="etag" name="tag" placeholder="tag" onChange={NoteEditing} />
                                 </div>
                             </form>
+                            <br/><br/>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-outline-primary" title={`${playing!==true?"Play Note":"Stop Playing"}`} ><i className={`fas fa-${playing===true?"pause":"play"}`} onClick={()=>speak(note)} ></i></button>

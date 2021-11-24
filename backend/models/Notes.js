@@ -14,6 +14,10 @@ const NotesSchema = new Schema({
         type: String,
         required: true
     },
+    share :{
+        type: Boolean, 
+        default: false
+    },
     tag : {
         type: String,
         default: "Genral"

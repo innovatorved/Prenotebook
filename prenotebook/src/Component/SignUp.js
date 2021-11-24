@@ -118,6 +118,12 @@ export default function SignUp() {
                     <label htmlFor="cpassword" style={{"color": mode==="light"?"":"#dee4ce"}}>Confirm Password</label>
                     <input type="password" style={{"backgroundColor" :  mode==="light"?"":"#667574" ,"color" : mode==="light"?"":"white"}} className={`form-control ${SignUpInfo.password!==SignUpInfo.cpassword?"border border-danger":""}`} value={SignUpInfo.cpassword} onChange={ValueChanged} id="cpassword" name="cpassword" placeholder="Confirm Password"/>
                 </div>
+                <div className="form-group form-check col-md-6 my-1">
+                    <input type="checkbox" className="form-check-input mx-1" required={true}/>
+                    <label className="form-check-label" style={{"color": mode==="light"?"":"#dee4ce"}}>
+                        I agree <a href="/terms-and-condition" target="_blank" rel="noopener noreferrer">Terms and Condition</a> & <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+                    </label>
+                </div>
             </div>
             <button type="submit" disabled={SignUpInfo.password!==SignUpInfo.cpassword} className="btn btn-primary my-3">Sign Up</button>
         </form>

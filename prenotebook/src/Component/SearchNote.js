@@ -5,7 +5,7 @@ import {NoteContext} from '../Context/notes/NoteState';
 import {BackContext} from '../Context/notes/BackState';
 
 export default function SearchNote() {
-    const {SearchShareNote , searchNote} = useContext(NoteContext);
+    const {SearchShareNote , searchNote , playing , speak} = useContext(NoteContext);
     const {mode} = useContext(BackContext);
 
     const {id} = useParams();
@@ -30,6 +30,7 @@ export default function SearchNote() {
                         <br/><br/>
                         <p className="card-text noteItem" style={{"color" : mode==="light"?"":"white"}}>{searchNote.mynote.description}</p>
                         <br/><br/>
+                        <button type="button" className="btn btn-outline-primary" title={`${playing!==true?"Play Note":"Stop Playing"}`} ><i className={`fas fa-${playing===true?"pause":"play"}`} onClick={()=>speak(searchNote.mynote)} ></i></button>
                     </div>
                 </div>
             </div>

@@ -5,6 +5,7 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
+// import Parser from 'html-react-parser';
 
 
 import Navbar from './Component/Navbar';
@@ -13,11 +14,15 @@ import About from './Component/About';
 import Login from './Component/Login';
 import SignUp from './Component/SignUp';
 import Alert from './Component/Alert';
+
 import SearchNote from './Component/SearchNote';
+
 
 import NoteState from './Context/notes/NoteState';
 import AlertState from './Context/notes/AlertState';
 import BackState from './Context/notes/BackState';
+import TermsCondition from './Component/TermsCondition';
+import PrivacyPolicy from './Component/PrivacyPolicy';
 
 
 function App() {
@@ -50,7 +55,12 @@ function App() {
               <Route exact path="/note/:id">
                 <SearchNote/>
               </Route>
-
+              <Route exact path="/terms-and-condition">
+                <TermsCondition/>
+              </Route> 
+              <Route exact path="/privacy-policy">
+                <PrivacyPolicy/>
+              </Route> 
             </Switch>
           </div>
         </Router>

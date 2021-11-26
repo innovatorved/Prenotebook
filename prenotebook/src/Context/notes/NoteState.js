@@ -27,6 +27,12 @@ let initialValues = [
         "title": "",
         "description": "",
         "__v": 0
+      },
+      {
+        "_id": "4",
+        "title": "",
+        "description": "",
+        "__v": 0
       }
 ];
 

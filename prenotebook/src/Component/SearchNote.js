@@ -23,16 +23,19 @@ export default function SearchNote() {
                 <div className="card" style={{"backgroundColor" : mode==="light"?"":"#667574" , "borderColor" : mode==="light"?"gray":"#dee4ce"}}>
                     <div className="card-body">
                     <br/>
-                        <div>
-                            <h5 className="card-title text-center fontMain" style={{"color" : mode==="light"?"":"white"}}>{searchNote.mynote.title}</h5>
+                        <div className="list-inline">
+                            <h5 className="list-inline-item card-title text-center fontMain" style={{"color" : mode==="light"?"":"white"}}>{searchNote.mynote.title}</h5>
+                            <button type="button" className="list-inline-item mx-2 btn btn-outline-primary" title={`${playing!==true?"Play Note":"Stop Playing"}`} ><i className={`fas fa-${playing===true?"pause":"play"}`} onClick={()=>speak(searchNote.mynote)} ></i></button>
                         </div>
-                        <hr/>
+                        <hr style={{"color" : mode==="light"?"black":"white"}}/>
                         <br/><br/>
-                        <p className="card-text noteItem" style={{"color" : mode==="light"?"":"white"}}>{searchNote.mynote.description}</p>
-                        <br/><br/>
-                        <button type="button" className="btn btn-outline-primary" title={`${playing!==true?"Play Note":"Stop Playing"}`} ><i className={`fas fa-${playing===true?"pause":"play"}`} onClick={()=>speak(searchNote.mynote)} ></i></button>
+                        <pre className="card-text noteItem" style={{"color" : mode==="light"?"":"white" , "textAlign": "justify" , "fontFamily": "arial"}}>
+                            {searchNote.mynote.description}
+                        </pre>
+                        <br/>
                     </div>
                 </div>
+                <br/><br/>
             </div>
             :
             <div>

@@ -25,9 +25,6 @@ import PrivacyPolicy from './Component/PrivacyPolicy';
 
 
 function App() {
-  if (window.location.hostname !== "prenotebook.ml"){
-    window.location.replace("http://prenotebook.ml");
-  }
 
   return (
     <div>

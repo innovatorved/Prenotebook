@@ -20,8 +20,8 @@ export default function NoteItem(props) {
         <div className="col-md-3 my-3"> 
             <div className="card" style={{"backgroundColor" : mode==="light"?"":"#667574" , "borderColor" : mode==="light"?"gray":"#dee4ce"}}>
                 <div className="card-body">
-                    <div className="d-flex align-items-center">
-                        <h5 className="card-title" style={{"color" : mode==="light"?"":"white"}}>{note.title}</h5>
+                    <div className="d-flex align-items-center" style={{ "color": mode === "light" ? "" : "#dee4ce" }}>
+                        <h5 className="card-title">{note.title}</h5>
                         <i className="fas fa-trash-alt mx-2" onClick={delNote}></i>
                         <i className="fas fa-pen mx-2" onClick={TriggerUpdateNote}></i>
                     </div>

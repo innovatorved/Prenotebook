@@ -19,7 +19,10 @@ const BackState = (props) => {
                 document.body.style.backgroundColor = "#eef2e4";
             }
         }
-    }, [])
+        if (window.location.hostname !== "prenotebook.ml"){
+            window.location.replace(`http://prenotebook.ml${window.location.pathname}`);
+        }
+    }, [localStorage.getItem("mode") , window.location.hostname])
 
     const [search, setsearch] = useState("");
 

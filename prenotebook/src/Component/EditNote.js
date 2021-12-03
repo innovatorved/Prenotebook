@@ -58,7 +58,7 @@ export default function EditNote(props) {
                     <div className="modal-content" style={{ "backgroundColor": mode === "light" ? "#eef2e4" : "#32383e" }}>
                         <div className="modal-header">
                             <div>
-                                <h5 className="modal-title fontMain" style={{ "color": mode === "light" ? "" : "#dee4ce" }} id="exampleModalLabel" onClick={download}>Your Note<i class="mx-2 fas fa-file-download" title="Download Note"></i></h5>
+                                <h5 className="modal-title fontMain" style={{ "color": mode === "light" ? "" : "#dee4ce" }} id="exampleModalLabel" onClick={download}>Your Note<i className="mx-2 fas fa-file-download" title="Download Note"></i></h5>
                                 <div className="form-check form-switch" >
                                     <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault2" checked={note.share ? true : false} readOnly={true} onClick={ChangeShare} />
                                     <label className={`form-check-label text-${mode === "light" ? "dark" : "light"} mx-2 fontMain`} htmlFor="flexSwitchCheckDefault2">Sharing</label>

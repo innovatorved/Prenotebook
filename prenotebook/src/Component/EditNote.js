@@ -1,4 +1,5 @@
 import React, { useContext, useRef } from 'react';
+import { Link } from "react-router-dom";
 
 import { NoteContext } from '../Context/notes/NoteState';
 import { BackContext } from '../Context/notes/BackState';
@@ -65,6 +66,9 @@ export default function EditNote(props) {
                                 </div>
                             </div>
                             <button className={`btn btn-outline-info mx-2 me-2 ${!note.share ? "d-none" : ""}`} title={"Copy Link"} onClick={CopyToClipBoard}><i className="far fa-copy mx-2 my-2"></i></button>
+                            <Link to={`/note/${note._id}`} onClick={()=>{
+                                refClose.current.click();                                
+                                }}><i className={`fas fa-angle-right mx-2 me-2 ${!note.share ? "d-none" : ""}`}></i></Link>
 
                             <button type="button" className={`btn-close ${mode==="light"?"":"bg-light"}`} data-dismiss="modal" aria-label="Close">
                             </button>

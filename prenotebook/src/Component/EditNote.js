@@ -23,7 +23,6 @@ export default function EditNote(props) {
 
     const download = () => {
         let ele = document.createElement("a");
-        console.log(note)
         const txt = `${note.title}\n\n${note.description}\n\n\n${note.tag}\n\n${note.date}`;
         ele.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(txt));
         ele.setAttribute("download", `${note.title}.txt`);

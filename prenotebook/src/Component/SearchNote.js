@@ -28,7 +28,7 @@ export default function SearchNote() {
                             </div>
                             <hr style={{ "color": mode === "light" ? "black" : "white" }} />
                             <br /><br />
-                            <pre className="card-text noteItem" style={{ "color": mode === "light" ? "" : "white", "textAlign": "justify", "fontFamily": "arial" }}>
+                            <pre className="card-text noteItem" style={{ "color": mode === "light" ? "" : "white", "textAlign": "justify", "fontFamily": "arial"}}>
                                 {searchNote.mynote.description}
                             </pre>
                             <br />

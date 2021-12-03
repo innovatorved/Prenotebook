@@ -13,6 +13,7 @@ import About from './Component/About';
 import Login from './Component/Login';
 import SignUp from './Component/SignUp';
 import Alert from './Component/Alert';
+import Mynote from './Component/Mynote'
 
 import SearchNote from './Component/SearchNote';
 
@@ -52,6 +53,9 @@ function App() {
               </Route>
               <Route exact path="/note/:id">
                 <SearchNote/>
+              </Route>
+              <Route exact path="/mynote/:id">
+                <Mynote/>
               </Route>
               <Route exact path="/terms-and-condition">
                 <TermsCondition/>

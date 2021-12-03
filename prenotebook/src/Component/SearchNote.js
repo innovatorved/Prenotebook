@@ -12,7 +12,8 @@ export default function SearchNote() {
 
     useEffect(() => {
         SearchShareNote(id);
-    }, [id, SearchShareNote]);
+        // eslint-disable-next-line
+    }, []);
 
 
     return (

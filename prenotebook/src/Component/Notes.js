@@ -19,8 +19,8 @@ export default function Notes() {
         }else{
             history.push('/login');
         }
-        // eslint-disable-next-line 
-    }, [])
+        // eslint-disable-next-line
+    }, []);
 
     const ref = useRef(null);
     const [note, setnote] = useState({

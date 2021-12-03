@@ -1,5 +1,8 @@
 import React , {useState , useContext} from 'react';
-import {useHistory} from 'react-router-dom';
+import {
+    useHistory ,
+    Link
+} from 'react-router-dom';
 
 import { AlertContext } from '../Context/notes/AlertState';
 import { NoteContext } from '../Context/notes/NoteState';
@@ -65,7 +68,10 @@ export default function Login() {
 
                     <input type="password" style={{"backgroundColor" : mode==="light"?"":"#667574","color" : mode==="light"?"":"white"}} name="password" value={credentials.password} onChange={valueChanged} className="form-control" id="exampleInputPassword1" placeholder="Password"/>
                 </div>
-                <button type="submit" className="btn btn-primary my-2">Submit</button>
+                <div className="my-3">
+                    <button type="submit" className="btn btn-primary my-2">Submit</button>
+                    <Link to="/signup" className={`mx-3 link-${mode!=="light"?"light":"dark"} align-middle`}>SignUp</Link>
+                </div>
             </form>
         </div>
     )

@@ -1,4 +1,4 @@
-import React , { createContext, useState ,useEffect} from 'react';
+import React , { createContext, useState ,useLayoutEffect} from 'react';
 
 // Createcontext
 const BackContext = createContext();
@@ -7,7 +7,8 @@ const BackContext = createContext();
 const BackState = (props) => {
 
     const [mode, setmode] = useState("light");
-    useEffect(() => {
+
+    useLayoutEffect(() => {
         if(localStorage.getItem("mode")){
             if (localStorage.getItem("mode") !== "light"){
                 setmode("dark");
@@ -18,14 +19,13 @@ const BackState = (props) => {
                 localStorage.setItem("mode" , "light");
                 document.body.style.backgroundColor = "#eef2e4";
             }
-        }
+        } 
         if (window.location.hostname !== "prenotebook.ml"){
             window.location.replace(`http://prenotebook.ml${window.location.pathname}`);
         }
-    }, [localStorage.getItem("mode") , window.location.hostname])
+    }, [])
 
     const [search, setsearch] = useState("");
-
     const ChangeSearch=(value)=>{
         setsearch(value);
     }

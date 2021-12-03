@@ -1,5 +1,9 @@
 import React , {useState , useContext} from 'react';
-import {useHistory} from "react-router-dom";
+import {
+    useHistory,
+    Link
+
+} from "react-router-dom";
 
 import { AlertContext } from '../Context/notes/AlertState';
 import { NoteContext } from '../Context/notes/NoteState';
@@ -125,7 +129,10 @@ export default function SignUp() {
                     </label>
                 </div>
             </div>
-            <button type="submit" disabled={SignUpInfo.password!==SignUpInfo.cpassword} className="btn btn-primary my-3">Sign Up</button>
+            <div className="my-2">
+                <button type="submit" disabled={SignUpInfo.password!==SignUpInfo.cpassword} className="btn btn-primary my-3">Sign Up</button>
+                <Link to="/login" className={`mx-3 link-${mode!=="light"?"light":"dark"} align-middle`}>Login</Link>
+            </div>
         </form>
         </div>
         </>

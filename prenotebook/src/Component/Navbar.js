@@ -51,13 +51,13 @@ export default function Navbar() {
                         {
                             !localStorage.getItem("token")?
                             <>
-                            <Link to="/login" className="btn btn-outline-info me-2" role="button" aria-disabled="true">Login</Link>
-                            <Link to="/signup" className="btn btn-outline-info me-2" role="button" aria-disabled="true">SignUp</Link>
+                            <Link to="/login" className="form-control btn btn-outline-info me-2" role="button" aria-disabled="true">Login</Link>
+                            <Link to="/signup" className="form-control btn btn-outline-info me-2" role="button" aria-disabled="true">SignUp</Link>
                             </>:
-                            <button onClick={handleLogout} className="btn btn-outline-info me-2">Logout</button>
+                            <Link to="/login" onClick={handleLogout} role="button" className="btn btn-outline-info me-2">Logout</Link>
                         }
 
-                        <input className="form-control me-2" style={{"backgroundColor" : mode==="light"?"white":"#667574" , "color" : mode==="light"?"":"#cfd5c1"}} type="search" value={search} onChange={handleSearchChange} placeholder="Search" aria-label="Search"/>
+                        <input className="form-control me-2" style={{"backgroundColor" : mode==="light"?"white":"#667574" , "color" : mode==="light"?"":"#cfd5c1"}} type="search" value={search} onChange={handleSearchChange} placeholder="Search" onSubmit={(e)=>{e.preventDefault()}} disabled={localStorage.getItem("token")?false:true} title="Search for Note"/>
                     </form>
                     </div>
                 </div>

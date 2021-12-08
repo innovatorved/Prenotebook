@@ -31,7 +31,6 @@ const BackState = (props) => {
     }
 
     const ChangeMode = () => {
-        // document.body.style.backgroundColor = mode==="light"?"#eef2e4":"#32383e;";
         if (mode === "light"){
             setmode("dark");
             localStorage.setItem("mode" , "dark");

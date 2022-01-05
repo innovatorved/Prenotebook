@@ -1,23 +1,24 @@
 import React , {useEffect , useState} from 'react';
-import HomePage from './HomePage';
+// import HomePage from './HomePage';
 import Notes from './Notes';
 
 
 export default function Home() {
-    const [token, settoken] = useState(null);
+    // const [token, settoken] = useState(null);
 
-    useEffect(() => {
-        const tok = localStorage.getItem('token');
-        settoken(tok);
-    }, []);
+    // useEffect(() => {
+    //     const tok = localStorage.getItem('token');
+    //     settoken(tok);
+    // }, []);
     
     return (
         <div>
             {
-                token ?
+                // token ?
                 <Notes />
-                :
-                <HomePage />
+                // :
+                // <HomePage />
+
             }
         </div>
     )

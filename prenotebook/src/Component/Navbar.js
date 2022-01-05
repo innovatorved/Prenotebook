@@ -2,6 +2,7 @@ import React ,{useContext} from 'react';
 import { Link ,useLocation ,useHistory } from "react-router-dom";
 
 import { BackContext } from '../Context/notes/BackState';
+import { NoteContext } from '../Context/notes/NoteState';
 
 // Import Image
 import notebookDark from './notebookDark.png';
@@ -9,12 +10,14 @@ import notebookLight from './notebookLight.png';
 
 export default function Navbar() {
     const {mode , ChangeMode , search , ChangeSearch} = useContext(BackContext);
+    const {setnotes} = useContext(NoteContext);
 
     const location = useLocation();
     const history = useHistory();
 
     const handleLogout=()=>{
         localStorage.removeItem("token");
+        setnotes([]);
         history.push("/login");
     }
 

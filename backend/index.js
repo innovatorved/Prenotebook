@@ -8,7 +8,7 @@ connectToMongo();
 
 // Create express App and set PORT
 const app = express();
-const port = process.env.PORT || 3002;
+const port = 8000;
 
 // allow CORS using middleware
 app.use(cors());

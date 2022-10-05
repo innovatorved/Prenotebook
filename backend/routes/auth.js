@@ -50,21 +50,17 @@ router.post(
       let userU = await User.findOne({ username: req.body.username });
       if (userE) {
         success = false;
-        return res
-          .status(400)
-          .json({
-            success,
-            error: "User with samee email id already Registered",
-          });
+        return res.status(400).json({
+          success,
+          error: "User with samee email id already Registered",
+        });
       }
       if (userU) {
         success = false;
-        return res
-          .status(400)
-          .json({
-            success,
-            error: "User with samee username already Registered",
-          });
+        return res.status(400).json({
+          success,
+          error: "User with samee username already Registered",
+        });
       }
 
       // Create secure hhassed password from password
@@ -136,12 +132,10 @@ router.post(
       if (!user) {
         // If user not exists it send Bad request 400
         success = false;
-        return res
-          .status(400)
-          .json({
-            success,
-            error: "Please try to login with Correct Credentials",
-          });
+        return res.status(400).json({
+          success,
+          error: "Please try to login with Correct Credentials",
+        });
       }
       // Check the password
       const passwordCompare = await bcrypt.compare(password, user.password);
@@ -155,12 +149,10 @@ router.post(
       if (!passwordCompare) {
         // If password wrong send Bad request 400
         success = false;
-        return res
-          .status(400)
-          .json({
-            success,
-            error: "Please try to login with Correct Credentials",
-          });
+        return res.status(400).json({
+          success,
+          error: "Please try to login with Correct Credentials",
+        });
       }
 
       /* Sending jwt token */

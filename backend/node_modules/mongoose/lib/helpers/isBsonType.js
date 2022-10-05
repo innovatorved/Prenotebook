@@ -1,13 +1,16 @@
 'use strict';
 
-const get = require('./get');
-
-/*!
+/**
  * Get the bson type, if it exists
+ * @api private
  */
 
 function isBsonType(obj, typename) {
-  return get(obj, '_bsontype', void 0) === typename;
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    obj._bsontype === typename
+  );
 }
 
 module.exports = isBsonType;

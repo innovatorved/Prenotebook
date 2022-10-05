@@ -15,20 +15,13 @@ const immediate = require('./helpers/immediate');
  *
  * @param {String} name name of the collection
  * @param {Connection} conn A MongooseConnection instance
- * @param {Object} opts optional collection options
+ * @param {Object} [opts] optional collection options
  * @api public
  */
 
 function Collection(name, conn, opts) {
   if (opts === void 0) {
     opts = {};
-  }
-  if (opts.capped === void 0) {
-    opts.capped = {};
-  }
-
-  if (typeof opts.capped === 'number') {
-    opts.capped = { size: opts.capped };
   }
 
   this.opts = opts;

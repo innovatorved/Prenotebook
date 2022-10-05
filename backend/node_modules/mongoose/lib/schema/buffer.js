@@ -52,7 +52,7 @@ SchemaBuffer._checkRequired = v => !!(v && v.length);
 /**
  * Sets a default option for all Buffer instances.
  *
- * ####Example:
+ * #### Example:
  *
  *     // Make all buffers have `required` of true by default.
  *     mongoose.Schema.Buffer.set('required', true);
@@ -60,8 +60,8 @@ SchemaBuffer._checkRequired = v => !!(v && v.length);
  *     const User = mongoose.model('User', new Schema({ test: Buffer }));
  *     new User({ }).validateSync().errors.test.message; // Path `test` is required.
  *
- * @param {String} option - The option you'd like to set the value for
- * @param {*} value - value for option
+ * @param {String} option The option you'd like to set the value for
+ * @param {Any} value value for option
  * @return {undefined}
  * @function set
  * @static
@@ -74,7 +74,7 @@ SchemaBuffer.set = SchemaType.set;
  * Override the function the required validator uses to check whether a string
  * passes the `required` check.
  *
- * ####Example:
+ * #### Example:
  *
  *     // Allow empty strings to pass `required` check
  *     mongoose.Schema.Types.String.checkRequired(v => v != null);
@@ -144,7 +144,9 @@ SchemaBuffer.prototype.cast = function(value, doc, init) {
       return ret;
     }
 
-    return this._castRef(value, doc, init);
+    if (value == null || utils.isNonBuiltinObject(value)) {
+      return this._castRef(value, doc, init);
+    }
   }
 
   // documents
@@ -200,9 +202,9 @@ SchemaBuffer.prototype.cast = function(value, doc, init) {
 
 /**
  * Sets the default [subtype](https://studio3t.com/whats-new/best-practices-uuid-mongodb/)
- * for this buffer. You can find a [list of allowed subtypes here](http://api.mongodb.com/python/current/api/bson/binary.html).
+ * for this buffer. You can find a [list of allowed subtypes here](https://api.mongodb.com/python/current/api/bson/binary.html).
  *
- * ####Example:
+ * #### Example:
  *
  *     const s = new Schema({ uuid: { type: Buffer, subtype: 4 });
  *     const M = db.model('M', s);

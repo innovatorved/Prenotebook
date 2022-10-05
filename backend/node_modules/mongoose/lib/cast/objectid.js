@@ -1,19 +1,19 @@
 'use strict';
 
+const isBsonType = require('../helpers/isBsonType');
 const ObjectId = require('../driver').get().ObjectId;
-const assert = require('assert');
 
 module.exports = function castObjectId(value) {
   if (value == null) {
     return value;
   }
 
-  if (value instanceof ObjectId) {
+  if (isBsonType(value, 'ObjectID')) {
     return value;
   }
 
   if (value._id) {
-    if (value._id instanceof ObjectId) {
+    if (isBsonType(value._id, 'ObjectID')) {
       return value._id;
     }
     if (value._id.toString instanceof Function) {
@@ -25,5 +25,5 @@ module.exports = function castObjectId(value) {
     return new ObjectId(value.toString());
   }
 
-  assert.ok(false);
+  return new ObjectId(value);
 };

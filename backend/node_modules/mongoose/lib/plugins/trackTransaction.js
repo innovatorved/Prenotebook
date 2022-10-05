@@ -2,9 +2,10 @@
 
 const arrayAtomicsSymbol = require('../helpers/symbols').arrayAtomicsSymbol;
 const sessionNewDocuments = require('../helpers/symbols').sessionNewDocuments;
+const utils = require('../utils');
 
 module.exports = function trackTransaction(schema) {
-  schema.pre('save', function() {
+  schema.pre('save', function trackTransactionPreSave() {
     const session = this.$session();
     if (session == null) {
       return;
@@ -22,14 +23,14 @@ module.exports = function trackTransaction(schema) {
         initialState.versionKey = this.get(this.$__schema.options.versionKey);
       }
 
-      initialState.modifiedPaths = new Set(Object.keys(this.$__.activePaths.states.modify));
+      initialState.modifiedPaths = new Set(Object.keys(this.$__.activePaths.getStatePaths('modify')));
       initialState.atomics = _getAtomics(this);
 
       session[sessionNewDocuments].set(this, initialState);
     } else {
       const state = session[sessionNewDocuments].get(this);
 
-      for (const path of Object.keys(this.$__.activePaths.states.modify)) {
+      for (const path of Object.keys(this.$__.activePaths.getStatePaths('modify'))) {
         state.modifiedPaths.add(path);
       }
       state.atomics = _getAtomics(this, state.atomics);
@@ -46,11 +47,11 @@ function _getAtomics(doc, previous) {
   for (const path of pathsToCheck) {
     const val = doc.$__getValue(path);
     if (val != null &&
-        val instanceof Array &&
-        val.isMongooseDocumentArray &&
+        Array.isArray(val) &&
+        utils.isMongooseDocumentArray(val) &&
         val.length &&
         val[arrayAtomicsSymbol] != null &&
-        Object.keys(val[arrayAtomicsSymbol]).length > 0) {
+        Object.keys(val[arrayAtomicsSymbol]).length !== 0) {
       const existing = previous.get(path) || {};
       pathToAtomics.set(path, mergeAtomics(existing, val[arrayAtomicsSymbol]));
     }
@@ -61,7 +62,7 @@ function _getAtomics(doc, previous) {
     const path = dirt.path;
 
     const val = dirt.value;
-    if (val != null && val[arrayAtomicsSymbol] != null && Object.keys(val[arrayAtomicsSymbol]).length > 0) {
+    if (val != null && val[arrayAtomicsSymbol] != null && Object.keys(val[arrayAtomicsSymbol]).length !== 0) {
       const existing = previous.get(path) || {};
       pathToAtomics.set(path, mergeAtomics(existing, val[arrayAtomicsSymbol]));
     }

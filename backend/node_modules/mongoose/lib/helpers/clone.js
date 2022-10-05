@@ -1,7 +1,5 @@
 'use strict';
 
-
-const cloneRegExp = require('regexp-clone');
 const Decimal = require('../types/decimal128');
 const ObjectId = require('../types/objectid');
 const specialProperties = require('./specialProperties');
@@ -14,7 +12,7 @@ const trustedSymbol = require('./query/trusted').trustedSymbol;
 const utils = require('../utils');
 
 
-/*!
+/**
  * Object clone with Mongoose natives support.
  *
  * If options.minimize is true, creates a minimal data object. Empty objects and undefined values will not be cloned. This makes the data payload sent to MongoDB as small as possible.
@@ -34,7 +32,7 @@ function clone(obj, options, isArrayChild) {
   }
 
   if (Array.isArray(obj)) {
-    return cloneArray(obj, options);
+    return cloneArray(utils.isMongooseArray(obj) ? obj.__array : obj, options);
   }
 
   if (isMongooseObject(obj)) {
@@ -43,23 +41,34 @@ function clone(obj, options, isArrayChild) {
     if (options && options._skipSingleNestedGetters && obj.$isSingleNested) {
       options = Object.assign({}, options, { getters: false });
     }
+    const isSingleNested = obj.$isSingleNested;
 
     if (utils.isPOJO(obj) && obj.$__ != null && obj._doc != null) {
       return obj._doc;
     }
 
+    let ret;
     if (options && options.json && typeof obj.toJSON === 'function') {
-      return obj.toJSON(options);
+      ret = obj.toJSON(options);
+    } else {
+      ret = obj.toObject(options);
     }
-    return obj.toObject(options);
+
+    if (options && options.minimize && isSingleNested && Object.keys(ret).length === 0) {
+      return undefined;
+    }
+
+    return ret;
   }
 
-  if (obj.constructor) {
-    switch (getFunctionName(obj.constructor)) {
+  const objConstructor = obj.constructor;
+
+  if (objConstructor) {
+    switch (getFunctionName(objConstructor)) {
       case 'Object':
         return cloneObject(obj, options, isArrayChild);
       case 'Date':
-        return new obj.constructor(+obj);
+        return new objConstructor(+obj);
       case 'RegExp':
         return cloneRegExp(obj);
       default:
@@ -68,7 +77,7 @@ function clone(obj, options, isArrayChild) {
     }
   }
 
-  if (obj instanceof ObjectId) {
+  if (isBsonType(obj, 'ObjectID')) {
     return new ObjectId(obj.id);
   }
 
@@ -79,12 +88,12 @@ function clone(obj, options, isArrayChild) {
     return Decimal.fromString(obj.toString());
   }
 
-  if (!obj.constructor && isObject(obj)) {
-    // object created with Object.create(null)
+  // object created with Object.create(null)
+  if (!objConstructor && isObject(obj)) {
     return cloneObject(obj, options, isArrayChild);
   }
 
-  if (obj[symbols.schemaTypeSymbol]) {
+  if (typeof obj === 'object' && obj[symbols.schemaTypeSymbol]) {
     return obj.clone();
   }
 
@@ -95,7 +104,7 @@ function clone(obj, options, isArrayChild) {
     return obj;
   }
 
-  if (obj.valueOf != null) {
+  if (typeof obj.valueOf === 'function') {
     return obj.valueOf();
   }
 
@@ -109,28 +118,38 @@ module.exports = clone;
 
 function cloneObject(obj, options, isArrayChild) {
   const minimize = options && options.minimize;
+  const omitUndefined = options && options.omitUndefined;
+  const seen = options && options._seen;
   const ret = {};
   let hasKeys;
 
-  if (obj[trustedSymbol]) {
+  if (seen && seen.has(obj)) {
+    return seen.get(obj);
+  } else if (seen) {
+    seen.set(obj, ret);
+  }
+  if (trustedSymbol in obj) {
     ret[trustedSymbol] = obj[trustedSymbol];
   }
 
-  for (const k of Object.keys(obj)) {
-    if (specialProperties.has(k)) {
+  let i = 0;
+  let key = '';
+  const keys = Object.keys(obj);
+  const len = keys.length;
+
+  for (i = 0; i < len; ++i) {
+    if (specialProperties.has(key = keys[i])) {
       continue;
     }
 
     // Don't pass `isArrayChild` down
-    const val = clone(obj[k], options);
+    const val = clone(obj[key], options, false);
 
-    if (!minimize || (typeof val !== 'undefined')) {
-      if (minimize === false && typeof val === 'undefined') {
-        delete ret[k];
-      } else {
-        hasKeys || (hasKeys = true);
-        ret[k] = val;
-      }
+    if ((minimize === false || omitUndefined) && typeof val === 'undefined') {
+      delete ret[key];
+    } else if (minimize !== true || (typeof val !== 'undefined')) {
+      hasKeys || (hasKeys = true);
+      ret[key] = val;
     }
   }
 
@@ -138,11 +157,21 @@ function cloneObject(obj, options, isArrayChild) {
 }
 
 function cloneArray(arr, options) {
-  const ret = [];
-
-  for (const item of arr) {
-    ret.push(clone(item, options, true));
+  let i = 0;
+  const len = arr.length;
+  const ret = new Array(len);
+  for (i = 0; i < len; ++i) {
+    ret[i] = clone(arr[i], options, true);
   }
 
+  return ret;
+}
+
+function cloneRegExp(regexp) {
+  const ret = new RegExp(regexp.source, regexp.flags);
+
+  if (ret.lastIndex !== regexp.lastIndex) {
+    ret.lastIndex = regexp.lastIndex;
+  }
   return ret;
 }

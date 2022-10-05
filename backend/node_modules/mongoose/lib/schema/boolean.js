@@ -47,7 +47,7 @@ SchemaBoolean._cast = castBoolean;
 /**
  * Sets a default option for all Boolean instances.
  *
- * ####Example:
+ * #### Example:
  *
  *     // Make all booleans have `default` of false.
  *     mongoose.Schema.Boolean.set('default', false);
@@ -55,8 +55,8 @@ SchemaBoolean._cast = castBoolean;
  *     const Order = mongoose.model('Order', new Schema({ isPaid: Boolean }));
  *     new Order({ }).isPaid; // false
  *
- * @param {String} option - The option you'd like to set the value for
- * @param {*} value - value for option
+ * @param {String} option The option you'd like to set the value for
+ * @param {Any} value value for option
  * @return {undefined}
  * @function set
  * @static
@@ -68,7 +68,7 @@ SchemaBoolean.set = SchemaType.set;
 /**
  * Get/set the function used to cast arbitrary values to booleans.
  *
- * ####Example:
+ * #### Example:
  *
  *     // Make Mongoose cast empty string '' to false.
  *     const original = mongoose.Schema.Boolean.cast();
@@ -148,7 +148,7 @@ SchemaBoolean.prototype.checkRequired = function(value) {
 /**
  * Configure which values get casted to `true`.
  *
- * ####Example:
+ * #### Example:
  *
  *     const M = mongoose.model('Test', new Schema({ b: Boolean }));
  *     new M({ b: 'affirmative' }).b; // undefined
@@ -156,7 +156,7 @@ SchemaBoolean.prototype.checkRequired = function(value) {
  *     new M({ b: 'affirmative' }).b; // true
  *
  * @property convertToTrue
- * @type Set
+ * @type {Set}
  * @api public
  */
 
@@ -168,7 +168,7 @@ Object.defineProperty(SchemaBoolean, 'convertToTrue', {
 /**
  * Configure which values get casted to `false`.
  *
- * ####Example:
+ * #### Example:
  *
  *     const M = mongoose.model('Test', new Schema({ b: Boolean }));
  *     new M({ b: 'nay' }).b; // undefined
@@ -176,7 +176,7 @@ Object.defineProperty(SchemaBoolean, 'convertToTrue', {
  *     new M({ b: 'nay' }).b; // false
  *
  * @property convertToFalse
- * @type Set
+ * @type {Set}
  * @api public
  */
 
@@ -189,7 +189,7 @@ Object.defineProperty(SchemaBoolean, 'convertToFalse', {
  * Casts to boolean
  *
  * @param {Object} value
- * @param {Object} model - this value is optional
+ * @param {Object} model this value is optional
  * @api private
  */
 
@@ -242,10 +242,7 @@ SchemaBoolean.prototype.castForQuery = function($conditional, val) {
  */
 
 SchemaBoolean.prototype._castNullish = function _castNullish(v) {
-  if (typeof v === 'undefined' &&
-      this.$$context != null &&
-      this.$$context._mongooseOptions != null &&
-      this.$$context._mongooseOptions.omitUndefined) {
+  if (typeof v === 'undefined') {
     return v;
   }
   const castBoolean = typeof this.constructor.cast === 'function' ?

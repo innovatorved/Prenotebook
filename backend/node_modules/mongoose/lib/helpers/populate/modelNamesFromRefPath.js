@@ -2,8 +2,12 @@
 
 const MongooseError = require('../../error/mongooseError');
 const isPathExcluded = require('../projection/isPathExcluded');
+const lookupLocalFields = require('./lookupLocalFields');
+const mpath = require('mpath');
 const util = require('util');
 const utils = require('../../utils');
+
+const hasNumericPropRE = /(\.\d+$|\.\d+\.)/g;
 
 module.exports = function modelNamesFromRefPath(refPath, doc, populatedPath, modelSchema, queryProjection) {
   if (refPath == null) {
@@ -18,10 +22,9 @@ module.exports = function modelNamesFromRefPath(refPath, doc, populatedPath, mod
   // If populated path has numerics, the end `refPath` should too. For example,
   // if populating `a.0.b` instead of `a.b` and `b` has `refPath = a.c`, we
   // should return `a.0.c` for the refPath.
-  const hasNumericProp = /(\.\d+$|\.\d+\.)/g;
 
-  if (hasNumericProp.test(populatedPath)) {
-    const chunks = populatedPath.split(hasNumericProp);
+  if (hasNumericPropRE.test(populatedPath)) {
+    const chunks = populatedPath.split(hasNumericPropRE);
 
     if (chunks[chunks.length - 1] === '') {
       throw new Error('Can\'t populate individual element in an array');
@@ -33,8 +36,8 @@ module.exports = function modelNamesFromRefPath(refPath, doc, populatedPath, mod
     for (let i = 0; i < chunks.length; i += 2) {
       const chunk = chunks[i];
       if (_remaining.startsWith(chunk + '.')) {
-        _refPath += _remaining.substr(0, chunk.length) + chunks[i + 1];
-        _remaining = _remaining.substr(chunk.length + 1);
+        _refPath += _remaining.substring(0, chunk.length) + chunks[i + 1];
+        _remaining = _remaining.substring(chunk.length + 1);
       } else if (i === chunks.length - 1) {
         _refPath += _remaining;
         _remaining = '';
@@ -44,13 +47,13 @@ module.exports = function modelNamesFromRefPath(refPath, doc, populatedPath, mod
       }
     }
 
-    const refValue = utils.getValue(_refPath, doc);
+    const refValue = mpath.get(_refPath, doc, lookupLocalFields);
     let modelNames = Array.isArray(refValue) ? refValue : [refValue];
     modelNames = utils.array.flatten(modelNames);
     return modelNames;
   }
 
-  const refValue = utils.getValue(refPath, doc);
+  const refValue = mpath.get(refPath, doc, lookupLocalFields);
 
   let modelNames;
   if (modelSchema != null && modelSchema.virtuals.hasOwnProperty(refPath)) {

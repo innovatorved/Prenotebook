@@ -2,10 +2,13 @@
 
 const get = require('../get');
 const helperIsObject = require('../isObject');
+const decorateDiscriminatorIndexOptions = require('../indexes/decorateDiscriminatorIndexOptions');
 
-/*!
+/**
  * Gather all indexes defined in the schema, including single nested,
  * document arrays, and embedded discriminators.
+ * @param {Schema} schema
+ * @api private
  */
 
 module.exports = function getIndexes(schema) {
@@ -88,6 +91,7 @@ module.exports = function getIndexes(schema) {
         }
 
         const indexName = options && options.name;
+
         if (typeof indexName === 'string') {
           if (indexByName.has(indexName)) {
             Object.assign(indexByName.get(indexName), field);
@@ -108,19 +112,24 @@ module.exports = function getIndexes(schema) {
       fixSubIndexPaths(schema, prefix);
     } else {
       schema._indexes.forEach(function(index) {
-        if (!('background' in index[1])) {
-          index[1].background = true;
+        const options = index[1];
+        if (!('background' in options)) {
+          options.background = true;
         }
+        decorateDiscriminatorIndexOptions(schema, options);
       });
       indexes = indexes.concat(schema._indexes);
     }
   }
 
-  /*!
+  /**
    * Checks for indexes added to subdocs using Schema.index().
    * These indexes need their paths prefixed properly.
    *
    * schema._indexes = [ [indexObj, options], [indexObj, options] ..]
+   * @param {Schema} schema
+   * @param {String} prefix
+   * @api private
    */
 
   function fixSubIndexPaths(schema, prefix) {

@@ -6,10 +6,10 @@ const each = require('../helpers/each');
  * ignore
  */
 
-module.exports = function(schema) {
+module.exports = function removeSubdocs(schema) {
   const unshift = true;
-  schema.s.hooks.pre('remove', false, function(next) {
-    if (this.ownerDocument) {
+  schema.s.hooks.pre('remove', false, function removeSubDocsPreRemove(next) {
+    if (this.$isSubdocument) {
       next();
       return;
     }

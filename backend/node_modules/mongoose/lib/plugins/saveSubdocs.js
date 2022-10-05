@@ -6,10 +6,10 @@ const each = require('../helpers/each');
  * ignore
  */
 
-module.exports = function(schema) {
+module.exports = function saveSubdocs(schema) {
   const unshift = true;
-  schema.s.hooks.pre('save', false, function(next) {
-    if (this.ownerDocument) {
+  schema.s.hooks.pre('save', false, function saveSubdocsPreSave(next) {
+    if (this.$isSubdocument) {
       next();
       return;
     }
@@ -36,8 +36,8 @@ module.exports = function(schema) {
     });
   }, null, unshift);
 
-  schema.s.hooks.post('save', function(doc, next) {
-    if (this.ownerDocument) {
+  schema.s.hooks.post('save', function saveSubdocsPostSave(doc, next) {
+    if (this.$isSubdocument) {
       next();
       return;
     }

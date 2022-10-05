@@ -44,7 +44,7 @@ function applyTimestampsToUpdate(now, createdAt, updatedAt, currentUpdate, optio
 
   if (Array.isArray(updates)) {
     // Update with aggregation pipeline
-    updates.push({ $set: { updatedAt: now } });
+    updates.push({ $set: { [updatedAt]: now } });
 
     return updates;
   }
@@ -80,7 +80,6 @@ function applyTimestampsToUpdate(now, createdAt, updatedAt, currentUpdate, optio
   }
 
   if (!skipCreatedAt && createdAt) {
-
     if (currentUpdate[createdAt]) {
       delete currentUpdate[createdAt];
     }

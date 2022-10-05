@@ -15,7 +15,7 @@ function applyTimestampsToChildren(now, update, schema) {
   }
 
   const keys = Object.keys(update);
-  const hasDollarKey = keys.some(key => key.startsWith('$'));
+  const hasDollarKey = keys.some(key => key[0] === '$');
 
   if (hasDollarKey) {
     if (update.$push) {
@@ -38,7 +38,7 @@ function applyTimestampsToChildren(now, update, schema) {
     }
   }
 
-  const updateKeys = Object.keys(update).filter(key => !key.startsWith('$'));
+  const updateKeys = Object.keys(update).filter(key => key[0] !== '$');
   for (const key of updateKeys) {
     applyTimestampsToUpdateKey(schema, key, update, now);
   }
@@ -61,6 +61,8 @@ function applyTimestampsToChildren(now, update, schema) {
             if (createdAt != null) {
               subdoc[createdAt] = now;
             }
+
+            applyTimestampsToChildren(now, subdoc, $path.schema);
           });
         } else {
           if (updatedAt != null) {
@@ -69,6 +71,8 @@ function applyTimestampsToChildren(now, update, schema) {
           if (createdAt != null) {
             op[key][createdAt] = now;
           }
+
+          applyTimestampsToChildren(now, op[key], $path.schema);
         }
       }
     }
@@ -78,11 +82,14 @@ function applyTimestampsToChildren(now, update, schema) {
 function applyTimestampsToDocumentArray(arr, schematype, now) {
   const timestamps = schematype.schema.options.timestamps;
 
+  const len = arr.length;
+
   if (!timestamps) {
+    for (let i = 0; i < len; ++i) {
+      applyTimestampsToChildren(now, arr[i], schematype.schema);
+    }
     return;
   }
-
-  const len = arr.length;
 
   const createdAt = handleTimestampOption(timestamps, 'createdAt');
   const updatedAt = handleTimestampOption(timestamps, 'updatedAt');
@@ -101,6 +108,7 @@ function applyTimestampsToDocumentArray(arr, schematype, now) {
 function applyTimestampsToSingleNested(subdoc, schematype, now) {
   const timestamps = schematype.schema.options.timestamps;
   if (!timestamps) {
+    applyTimestampsToChildren(now, subdoc, schematype.schema);
     return;
   }
 
@@ -153,7 +161,7 @@ function applyTimestampsToUpdateKey(schema, key, update, now) {
         // Single nested is easy
         update[parentPath + '.' + updatedAt] = now;
       } else if (parentSchemaType.$isMongooseDocumentArray) {
-        let childPath = key.substr(parentPath.length + 1);
+        let childPath = key.substring(parentPath.length + 1);
 
         if (/^\d+$/.test(childPath)) {
           update[parentPath + '.' + childPath][updatedAt] = now;
@@ -161,7 +169,7 @@ function applyTimestampsToUpdateKey(schema, key, update, now) {
         }
 
         const firstDot = childPath.indexOf('.');
-        childPath = firstDot !== -1 ? childPath.substr(0, firstDot) : childPath;
+        childPath = firstDot !== -1 ? childPath.substring(0, firstDot) : childPath;
 
         update[parentPath + '.' + childPath + '.' + updatedAt] = now;
       }

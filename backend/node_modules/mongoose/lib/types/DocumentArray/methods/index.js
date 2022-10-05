@@ -2,11 +2,11 @@
 
 const ArrayMethods = require('../../array/methods');
 const Document = require('../../../document');
-const ObjectId = require('../../objectid');
 const castObjectId = require('../../../cast/objectid');
 const getDiscriminatorByValue = require('../../../helpers/discriminator/getDiscriminatorByValue');
 const internalToObjectOptions = require('../../../options').internalToObjectOptions;
 const utils = require('../../../utils');
+const isBsonType = require('../../../helpers/isBsonType');
 
 const arrayParentSymbol = require('../../../helpers/symbols').arrayParentSymbol;
 const arrayPathSymbol = require('../../../helpers/symbols').arrayPathSymbol;
@@ -22,12 +22,20 @@ const methods = {
     return this.toObject(internalToObjectOptions);
   },
 
+  /*!
+   * ignore
+   */
+
+  getArrayParent() {
+    return this[arrayParentSymbol];
+  },
+
   /**
    * Overrides MongooseArray#cast
    *
    * @method _cast
    * @api private
-   * @receiver MongooseDocumentArray
+   * @memberOf MongooseDocumentArray
    */
 
   _cast(value, index) {
@@ -36,7 +44,7 @@ const methods = {
     }
     let Constructor = this[arraySchemaSymbol].casterConstructor;
     const isInstance = Constructor.$isMongooseDocumentArray ?
-      value && value.isMongooseDocumentArray :
+      utils.isMongooseDocumentArray(value) :
       value instanceof Constructor;
     if (isInstance ||
         // Hack re: #5001, see #5005
@@ -58,7 +66,7 @@ const methods = {
     // only objects are permitted so we can safely assume that
     // non-objects are to be interpreted as _id
     if (Buffer.isBuffer(value) ||
-        value instanceof ObjectId || !utils.isObject(value)) {
+        isBsonType(value, 'ObjectID') || !utils.isObject(value)) {
       value = { _id: value };
     }
 
@@ -89,7 +97,7 @@ const methods = {
   /**
    * Searches array items for the first document with a matching _id.
    *
-   * ####Example:
+   * #### Example:
    *
    *     const embeddedDoc = m.array.id(some_id);
    *
@@ -98,7 +106,7 @@ const methods = {
    * @TODO cast to the _id based on schema for proper comparison
    * @method id
    * @api public
-   * @receiver MongooseDocumentArray
+   * @memberOf MongooseDocumentArray
    */
 
   id(id) {
@@ -126,7 +134,7 @@ const methods = {
         if (sid == _id._id) {
           return val;
         }
-      } else if (!(id instanceof ObjectId) && !(_id instanceof ObjectId)) {
+      } else if (!isBsonType(id, 'ObjectID') && !isBsonType(_id, 'ObjectID')) {
         if (id == _id || utils.deepEqual(id, _id)) {
           return val;
         }
@@ -141,7 +149,7 @@ const methods = {
   /**
    * Returns a native js Array of plain js objects
    *
-   * ####NOTE:
+   * #### Note:
    *
    * _Each sub-document is converted to a plain object by calling its `#toObject` method._
    *
@@ -149,7 +157,7 @@ const methods = {
    * @return {Array}
    * @method toObject
    * @api public
-   * @receiver MongooseDocumentArray
+   * @memberOf MongooseDocumentArray
    */
 
   toObject(options) {
@@ -173,7 +181,7 @@ const methods = {
   /**
    * Wraps [`Array#push`](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/push) with proper change tracking.
    *
-   * @param {Object} [args...]
+   * @param {...Object} [args]
    * @api public
    * @method push
    * @memberOf MongooseDocumentArray
@@ -190,7 +198,7 @@ const methods = {
   /**
    * Pulls items from the array atomically.
    *
-   * @param {Object} [args...]
+   * @param {...Object} [args]
    * @api public
    * @method pull
    * @memberOf MongooseDocumentArray
@@ -206,6 +214,7 @@ const methods = {
 
   /**
    * Wraps [`Array#shift`](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/unshift) with proper change tracking.
+   * @api private
    */
 
   shift() {
@@ -218,6 +227,7 @@ const methods = {
 
   /**
    * Wraps [`Array#splice`](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/splice) with proper change tracking and casting.
+   * @api private
    */
 
   splice() {
@@ -233,7 +243,7 @@ const methods = {
    *
    * @method inspect
    * @api public
-   * @receiver MongooseDocumentArray
+   * @memberOf MongooseDocumentArray
    */
 
   inspect() {
@@ -248,7 +258,7 @@ const methods = {
    * @param {Object} obj the value to cast to this arrays SubDocument schema
    * @method create
    * @api public
-   * @receiver MongooseDocumentArray
+   * @memberOf MongooseDocumentArray
    */
 
   create(obj) {
@@ -295,13 +305,25 @@ const methods = {
             break;
         }
 
-        if (_arr[i].isMongooseArray) {
+        if (utils.isMongooseArray(_arr[i])) {
           notify(val, _arr[i]);
         } else if (_arr[i]) {
           _arr[i].emit(event, val);
         }
       }
     };
+  },
+
+  set(i, val, skipModified) {
+    const arr = this.__array;
+    if (skipModified) {
+      arr[i] = val;
+      return this;
+    }
+    const value = methods._cast.call(this, val, i);
+    methods._markModified.call(this, i);
+    arr[i] = value;
+    return this;
   },
 
   _markModified(elem, embeddedPath) {
@@ -326,7 +348,7 @@ const methods = {
         return this;
       }
 
-      parent.markModified(dirtyPath, arguments.length > 0 ? elem : parent);
+      parent.markModified(dirtyPath, arguments.length !== 0 ? elem : parent);
     }
 
     return this;
@@ -335,10 +357,12 @@ const methods = {
 
 module.exports = methods;
 
-/*!
+/**
  * If this is a document array, each element may contain single
  * populated paths, so we need to modify the top-level document's
  * populated cache. See gh-8247, gh-8265.
+ * @param {Array} arr
+ * @api private
  */
 
 function _updateParentPopulated(arr) {

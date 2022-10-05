@@ -4,12 +4,12 @@
  * ignore
  */
 
-module.exports = function(schema) {
+module.exports = function validateBeforeSave(schema) {
   const unshift = true;
   schema.pre('save', false, function validateBeforeSave(next, options) {
     const _this = this;
     // Nested docs have their own presave
-    if (this.ownerDocument) {
+    if (this.$isSubdocument) {
       return next();
     }
 

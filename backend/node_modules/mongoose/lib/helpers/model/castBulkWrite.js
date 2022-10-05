@@ -7,9 +7,13 @@ const cast = require('../../cast');
 const castUpdate = require('../query/castUpdate');
 const setDefaultsOnInsert = require('../setDefaultsOnInsert');
 
-/*!
+/**
  * Given a model and a bulkWrite op, return a thunk that handles casting and
  * validating the individual op.
+ * @param {Model} originalModel
+ * @param {Object} op
+ * @param {Object} [options]
+ * @api private
  */
 
 module.exports = function castBulkWrite(originalModel, op, options) {
@@ -20,13 +24,19 @@ module.exports = function castBulkWrite(originalModel, op, options) {
       const model = decideModelByObject(originalModel, op['insertOne']['document']);
 
       const doc = new model(op['insertOne']['document']);
-      if (model.schema.options.timestamps) {
+      if (model.schema.options.timestamps && options.timestamps !== false) {
         doc.initializeTimestamps();
       }
       if (options.session != null) {
         doc.$session(options.session);
       }
       op['insertOne']['document'] = doc;
+
+      if (options.skipValidation || op['insertOne'].skipValidation) {
+        callback(null);
+        return;
+      }
+
       op['insertOne']['document'].$validate({ __noPromise: true }, function(error) {
         if (error) {
           return callback(error, null);
@@ -154,6 +164,12 @@ module.exports = function castBulkWrite(originalModel, op, options) {
       }
       op['replaceOne']['replacement'] = doc;
 
+      if (options.skipValidation || op['replaceOne'].skipValidation) {
+        op['replaceOne']['replacement'] = op['replaceOne']['replacement'].toBSON();
+        callback(null);
+        return;
+      }
+
       op['replaceOne']['replacement'].$validate({ __noPromise: true }, function(error) {
         if (error) {
           return callback(error, null);
@@ -210,8 +226,9 @@ function _addDiscriminatorToObject(schema, obj) {
   }
 }
 
-/*!
+/**
  * gets discriminator model if discriminator key is present in object
+ * @api private
  */
 
 function decideModelByObject(model, object) {

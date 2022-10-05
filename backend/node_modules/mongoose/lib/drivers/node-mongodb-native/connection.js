@@ -32,7 +32,7 @@ NativeConnection.STATES = STATES;
  * Inherits from Connection.
  */
 
-NativeConnection.prototype.__proto__ = MongooseConnection.prototype;
+Object.setPrototypeOf(NativeConnection.prototype, MongooseConnection.prototype);
 
 /**
  * Switches to a different database using the same connection pool.
@@ -71,6 +71,7 @@ NativeConnection.prototype.useDb = function(name, options) {
   newConn._closeCalled = this._closeCalled;
   newConn._hasOpened = this._hasOpened;
   newConn._listening = false;
+  newConn._parent = this;
 
   newConn.host = this.host;
   newConn.port = this.port;
@@ -136,6 +137,17 @@ NativeConnection.prototype.doClose = function(force, fn) {
     return this;
   }
 
+  let skipCloseClient = false;
+  if (force != null && typeof force === 'object') {
+    skipCloseClient = force.skipCloseClient;
+    force = force.force;
+  }
+
+  if (skipCloseClient) {
+    immediate(() => fn());
+    return this;
+  }
+
   this.client.close(force, (err, res) => {
     // Defer because the driver will wait at least 1ms before finishing closing
     // the pool, see https://github.com/mongodb-js/mongodb-core/blob/a8f8e4ce41936babc3b9112bf42d609779f03b39/lib/connection/pool.js#L1026-L1030.
@@ -145,6 +157,7 @@ NativeConnection.prototype.doClose = function(force, fn) {
   });
   return this;
 };
+
 
 /*!
  * Module exports.

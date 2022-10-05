@@ -29,7 +29,7 @@ function SchemaNumber(key, options) {
 /**
  * Attaches a getter for all Number instances.
  *
- * ####Example:
+ * #### Example:
  *
  *     // Make all numbers round down
  *     mongoose.Number.get(function(v) { return Math.floor(v); });
@@ -49,7 +49,7 @@ SchemaNumber.get = SchemaType.get;
 /**
  * Sets a default option for all Number instances.
  *
- * ####Example:
+ * #### Example:
  *
  *     // Make all numbers have option `min` equal to 0.
  *     mongoose.Schema.Number.set('min', 0);
@@ -57,8 +57,8 @@ SchemaNumber.get = SchemaType.get;
  *     const Order = mongoose.model('Order', new Schema({ amount: Number }));
  *     new Order({ amount: -10 }).validateSync().errors.amount.message; // Path `amount` must be larger than 0.
  *
- * @param {String} option - The option you'd like to set the value for
- * @param {*} value - value for option
+ * @param {String} option The option you'd like to set the value for
+ * @param {Any} value value for option
  * @return {undefined}
  * @function set
  * @static
@@ -76,7 +76,7 @@ SchemaNumber._cast = castNumber;
 /**
  * Get/set the function used to cast arbitrary values to numbers.
  *
- * ####Example:
+ * #### Example:
  *
  *     // Make Mongoose cast empty strings '' to 0 for paths declared as numbers
  *     const original = mongoose.Number.cast();
@@ -164,13 +164,13 @@ SchemaNumber.checkRequired = SchemaType.checkRequired;
  */
 
 SchemaNumber.prototype.checkRequired = function checkRequired(value, doc) {
-  if (SchemaType._isRef(this, value, doc, true)) {
-    return !!value;
+  if (typeof value === 'object' && SchemaType._isRef(this, value, doc, true)) {
+    return value != null;
   }
 
   // `require('util').inherits()` does **not** copy static properties, and
   // plugins like mongoose-float use `inherits()` for pre-ES6.
-  const _checkRequired = typeof this.constructor.checkRequired == 'function' ?
+  const _checkRequired = typeof this.constructor.checkRequired === 'function' ?
     this.constructor.checkRequired() :
     SchemaNumber.checkRequired();
 
@@ -180,7 +180,7 @@ SchemaNumber.prototype.checkRequired = function checkRequired(value, doc) {
 /**
  * Sets a minimum number validator.
  *
- * ####Example:
+ * #### Example:
  *
  *     const s = new Schema({ n: { type: Number, min: 10 })
  *     const M = db.model('M', s)
@@ -234,7 +234,7 @@ SchemaNumber.prototype.min = function(value, message) {
 /**
  * Sets a maximum number validator.
  *
- * ####Example:
+ * #### Example:
  *
  *     const s = new Schema({ n: { type: Number, max: 10 })
  *     const M = db.model('M', s)
@@ -288,7 +288,7 @@ SchemaNumber.prototype.max = function(value, message) {
 /**
  * Sets a enum validator
  *
- * ####Example:
+ * #### Example:
  *
  *     const s = new Schema({ n: { type: Number, enum: [1, 2, 3] });
  *     const M = db.model('M', s);
@@ -353,12 +353,10 @@ SchemaNumber.prototype.enum = function(values, message) {
  */
 
 SchemaNumber.prototype.cast = function(value, doc, init) {
-  if (SchemaType._isRef(this, value, doc, init)) {
-    if (typeof value === 'number') {
-      return value;
+  if (typeof value !== 'number' && SchemaType._isRef(this, value, doc, init)) {
+    if (value == null || utils.isNonBuiltinObject(value)) {
+      return this._castRef(value, doc, init);
     }
-
-    return this._castRef(value, doc, init);
   }
 
   const val = value && typeof value._id !== 'undefined' ?

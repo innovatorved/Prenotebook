@@ -12,7 +12,8 @@ module.exports = function cleanModifiedSubpaths(doc, path, options) {
   if (!doc) {
     return deleted;
   }
-  for (const modifiedPath of Object.keys(doc.$__.activePaths.states.modify)) {
+
+  for (const modifiedPath of Object.keys(doc.$__.activePaths.getStatePaths('modify'))) {
     if (skipDocArrays) {
       const schemaType = doc.$__schema.path(modifiedPath);
       if (schemaType && schemaType.$isMongooseDocumentArray) {
@@ -20,8 +21,14 @@ module.exports = function cleanModifiedSubpaths(doc, path, options) {
       }
     }
     if (modifiedPath.startsWith(path + '.')) {
-      delete doc.$__.activePaths.states.modify[modifiedPath];
+      doc.$__.activePaths.clearPath(modifiedPath);
       ++deleted;
+
+      if (doc.$isSubdocument) {
+        const owner = doc.ownerDocument();
+        const fullPath = doc.$__fullPath(modifiedPath);
+        owner.$__.activePaths.clearPath(fullPath);
+      }
     }
   }
   return deleted;

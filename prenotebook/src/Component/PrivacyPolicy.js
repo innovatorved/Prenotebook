@@ -1,7 +1,7 @@
-import React , {useContext} from 'react';
-import Parser from 'html-react-parser';
+import React, { useContext } from "react";
+import Parser from "html-react-parser";
 
-import { BackContext } from '../Context/notes/BackState';
+import { BackContext } from "../Context/notes/BackState";
 
 const rawhtml = `
 <h1>Privacy Policy</h1>
@@ -277,10 +277,10 @@ const rawhtml = `
 `;
 
 export default function PrivacyPolicy() {
-    const {mode} = useContext(BackContext);
-    return (
-        <div style={{color:mode==="light"?"black":"white"}}>
-            { Parser(rawhtml) }
-        </div>
-    )
+  const { mode } = useContext(BackContext);
+  return (
+    <div style={{ color: mode === "light" ? "black" : "white" }}>
+      {Parser(rawhtml)}
+    </div>
+  );
 }

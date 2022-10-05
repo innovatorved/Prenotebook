@@ -5,7 +5,7 @@ const SchemaTypeOptions = require('./SchemaTypeOptions');
 /**
  * The options defined on an ObjectId schematype.
  *
- * ####Example:
+ * #### Example:
  *
  *     const schema = new Schema({ testId: mongoose.ObjectId });
  *     schema.path('testId').options; // SchemaObjectIdOptions instance
@@ -25,7 +25,7 @@ const opts = require('./propertyOptions');
  * @api public
  * @property auto
  * @memberOf SchemaObjectIdOptions
- * @type Boolean
+ * @type {Boolean}
  * @instance
  */
 
@@ -34,7 +34,8 @@ Object.defineProperty(SchemaObjectIdOptions.prototype, 'auto', opts);
 /**
  * Sets default [populate options](/docs/populate.html#query-conditions).
  *
- * ####Example:
+ * #### Example:
+ *
  *     const schema = new Schema({
  *       child: {
  *         type: 'ObjectId',
@@ -50,7 +51,7 @@ Object.defineProperty(SchemaObjectIdOptions.prototype, 'auto', opts);
  * @api public
  * @property populate
  * @memberOf SchemaObjectIdOptions
- * @type Object
+ * @type {Object}
  * @instance
  */
 

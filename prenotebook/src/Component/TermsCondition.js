@@ -1,7 +1,7 @@
-import React , {useContext} from 'react';
-import Parser from 'html-react-parser';
+import React, { useContext } from "react";
+import Parser from "html-react-parser";
 
-import { BackContext } from '../Context/notes/BackState';
+import { BackContext } from "../Context/notes/BackState";
 
 const rawhtml = `
 <h3 style="text-align:center">TERMS OF SERVICES</h3>
@@ -225,13 +225,13 @@ const rawhtml = `
     <div style="margin: .5rem 0">India</div>
     <div style="margin: .5rem 0">support@prenotebook.ml</div>
 </div>
-`
+`;
 
 export default function TermsCondition() {
-    const {mode} = useContext(BackContext);
-    return (
-        <div style={{color:mode==="light"?"black":"white"}}>
-            { Parser(rawhtml) }
-        </div>
-    )
+  const { mode } = useContext(BackContext);
+  return (
+    <div style={{ color: mode === "light" ? "black" : "white" }}>
+      {Parser(rawhtml)}
+    </div>
+  );
 }

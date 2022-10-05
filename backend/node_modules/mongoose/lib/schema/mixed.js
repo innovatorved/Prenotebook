@@ -56,7 +56,7 @@ Mixed.prototype.constructor = Mixed;
 /**
  * Attaches a getter for all Mixed paths.
  *
- * ####Example:
+ * #### Example:
  *
  *     // Hide the 'hidden' path
  *     mongoose.Schema.Mixed.get(v => Object.assign({}, v, { hidden: null }));
@@ -76,7 +76,7 @@ Mixed.get = SchemaType.get;
 /**
  * Sets a default option for all Mixed instances.
  *
- * ####Example:
+ * #### Example:
  *
  *     // Make all mixed instances have `required` of true by default.
  *     mongoose.Schema.Mixed.set('required', true);
@@ -84,8 +84,8 @@ Mixed.get = SchemaType.get;
  *     const User = mongoose.model('User', new Schema({ test: mongoose.Mixed }));
  *     new User({ }).validateSync().errors.test.message; // Path `test` is required.
  *
- * @param {String} option - The option you'd like to set the value for
- * @param {*} value - value for option
+ * @param {String} option The option you'd like to set the value for
+ * @param {Any} value value for option
  * @return {undefined}
  * @function set
  * @static

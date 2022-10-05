@@ -34,7 +34,7 @@ let initialValues = [
   },
 ];
 
-const host = "http://localhost:3002";
+const host = "http://localhost:8000";
 
 const NoteState = (props) => {
   const [notes, setnotes] = useState(initialValues);

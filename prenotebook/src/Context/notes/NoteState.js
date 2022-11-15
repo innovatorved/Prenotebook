@@ -34,10 +34,10 @@ let initialValues = [
   },
 ];
 
-const host = "http://localhost:8000";
+const host = process.env.BACKEND_URL || "https://prenotebook-backend.vercel.app";
 
 const NoteState = (props) => {
-  const [notes, setnotes] = useState(initialValues);
+  const [ notes, setnotes ] = useState(initialValues);
 
   const fetchNotes = async () => {
     const authToken = localStorage.getItem("token");
@@ -54,7 +54,7 @@ const NoteState = (props) => {
     setnotes(FetchedNotes);
   };
 
-  const [searchNote, setsearchNote] = useState("");
+  const [ searchNote, setsearchNote ] = useState("");
   const SearchShareNote = async (id) => {
     const authToken = localStorage.getItem("token");
     const url = `${host}/api/notes/sharedNote/${id}`;
@@ -83,7 +83,7 @@ const NoteState = (props) => {
       body: JSON.stringify(note),
     });
     const jsonRes = await response.json();
-    setnotes([...notes, jsonRes.saveNote]);
+    setnotes([ ...notes, jsonRes.saveNote ]);
     return jsonRes;
   };
 
@@ -108,7 +108,7 @@ const NoteState = (props) => {
     );
   };
 
-  const [playing, setplaying] = useState(false);
+  const [ playing, setplaying ] = useState(false);
   const speak = (note) => {
     if (synth.speaking || note === null || note === "") {
       // console.error('Already speaking...');
@@ -163,11 +163,11 @@ const NoteState = (props) => {
     // search for note with id and Update
     let newNotes = JSON.parse(JSON.stringify(notes));
     for (let index = 0; index < notes.length; index++) {
-      if (newNotes[index]._id === id) {
-        newNotes[index].title = note.title;
-        newNotes[index].description = note.description;
-        newNotes[index].tag = note.tag;
-        newNotes[index].share = note.share;
+      if (newNotes[ index ]._id === id) {
+        newNotes[ index ].title = note.title;
+        newNotes[ index ].description = note.description;
+        newNotes[ index ].tag = note.tag;
+        newNotes[ index ].share = note.share;
         setnotes(newNotes);
         break;
       }

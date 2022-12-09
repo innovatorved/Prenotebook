@@ -6,7 +6,7 @@ Notebook is a note-taking service included as part of the free, web-based Notebo
 
 ## Demo
 
-http://prenotebook.me/
+http://prenotebook.ml/
 
 ## Deployment
 

@@ -7,7 +7,7 @@
     "start": "node index.js",
     "dev": "node index.js --watch",
     "build": "cd frontend && pnpm build",
-    "install:all": "pnpm install --recursive",
+    "install:all": "pnpm install && cd frontend && pnpm install",
     "fix": "prettier --write ."
   },
   "author": "",

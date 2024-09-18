@@ -1,14 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "index.js",
-      "use": "@vercel/node",
-      "config": {
-        "buildCommand": "pnpm run build"
-      }
-    }
-  ],
   "routes": [
     {
       "src": "/(.*)",

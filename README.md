@@ -22,19 +22,19 @@ To deploy this project run
 
 ```bash
     cd PreNotebook
-    pnpm install:all
+    npm install:all
 ```
 
 ### Build the Client
 
 ```bash
-    pnpm build
+    npm build
 ```
 
 ### Start the Server
 
 ```bash
-    pnpm start
+    npm start
 ```
 
 ## Tech Stack

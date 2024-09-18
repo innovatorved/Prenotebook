@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node index.js --watch",
-    "build": "cd frontend && pnpm build",
-    "install:all": "pnpm install && cd frontend && pnpm install",
+    "build": "cd frontend && npm build",
+    "install:all": "npm install && cd frontend && npm install && cd ..",
     "fix": "prettier --write ."
   },
   "author": "",

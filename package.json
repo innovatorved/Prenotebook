@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node index.js --watch",
-    "build": "cd frontend && npm build",
+    "build": "cd frontend && npm run build",
     "install:all": "npm install && cd frontend && npm install && cd ..",
     "fix": "prettier --write ."
   },
